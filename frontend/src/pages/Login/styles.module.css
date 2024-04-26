@@ -1,0 +1,70 @@
+.FullScreenContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to bottom, #57c1eb 0%, #246fa8 100%);
+}
+
+.MainContainer {
+    width: 80%;
+    height: 70%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.ContainerImage {
+    width: 50%;
+    height: 100%;
+    border-radius: 15px 0 0 15px;
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.ContainerLogin {
+    width: 50%;
+    height: 100%;
+    border-radius: 15px;
+    background-color: white;
+    border-radius: 0px 15px 15px 0;
+}
+
+.TitleSection {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    h1 {
+        font-size: 30px;
+        color: #0073f0;
+    }
+
+}
+
+.ButtonSection {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.FormSection {
+    margin-top: 10px;
+    width: 70%;
+    justify-content: center;
+    align-items: center;
+}

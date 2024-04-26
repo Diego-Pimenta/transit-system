@@ -1,0 +1,26 @@
+services:
+  mysqldb:
+    image: "mysql:8.0.36-debian"
+    container_name: mysqldb
+    ports:
+      - "3306:3306"
+    # volumes:
+      # - data:/data/db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: automotive_storage
+      MYSQL_PASSWORD: root
+
+#  transit-system:
+#    build: .
+#    image: diegopimenta/transit-system:latest
+#    container_name: transit-system
+#    ports:
+#      - "8081:8081"
+#    environment:
+#      HOST: mysqldb
+#    depends_on:
+#      - mysqldb
+#
+#volumes:
+#  data:
