@@ -8,11 +8,29 @@ import { Link } from "react-router-dom";
 import styles from "./styles.module.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const formValidation = yup.object().shape({
+  cpf: yup.string().required("Campo obrigatório"),
+  password: yup.string().required("Campo obrigatório"),
+});
 
 const Home = () => {
-  const notify = () => toast.error("CPF ou senha incorreto!");
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(formValidation),
+  });
+  const notifyForm = () => toast.error("CPF ou senha incorreto!");
+  const notifyRecaptch = () => toast.error("Confirme que você não é um robô!");
 
-  const [cpf, setCpf] = useState("");
+  const [recaptchaFilled, setRecaptchaFilled] = useState(false);
 
   const handleInputChange = (event) => {
     let inputValue = event.target.value.replace(/\D/g, "");
@@ -29,7 +47,20 @@ const Home = () => {
       })
       .join("");
 
-    setCpf(formattedValue);
+    setValue("cpf", formattedValue);
+  };
+
+  const Login = (data) => {
+    console.log(data);
+    if (recaptchaFilled) {
+      notifyForm();
+    } else {
+      notifyRecaptch();
+    }
+  };
+
+  const handleRecaptchaChange = (value) => {
+    setRecaptchaFilled(value !== null);
   };
 
   return (
@@ -47,27 +78,44 @@ const Home = () => {
                 controlId="floatingInput"
                 label="CPF"
                 className="mb-3"
+                error={errors.cpf}
               >
                 <Form.Control
                   type="text"
                   maxLength={14}
                   placeholder="000.000.000-00"
-                  value={cpf}
+                  value={watch("cpf")}
+                  {...register("cpf")}
                   onChange={handleInputChange}
                 />
               </FloatingLabel>
-              <FloatingLabel controlId="floatingPassword" label="Senha">
-                <Form.Control type="password" placeholder="Password" />
+              {errors.cpf && <span>{errors.cpf.message}</span>}
+              <FloatingLabel
+                controlId="floatingPassword"
+                label="Senha"
+                error={errors.password}
+              >
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  {...register("password")}
+                />
               </FloatingLabel>
+              {errors.password && <span>{errors.password.message}</span>}
             </div>
             <ReCAPTCHA
               sitekey="6Ld54sMpAAAAACmhsG5fqSDuuZuD4JGrtYK0oWV0"
               size="normal"
               style={{ marginTop: "10px" }}
+              onChange={handleRecaptchaChange}
             />
           </div>
           <div className={styles.ButtonSection}>
-            <Button variant="primary" style={{ width: "50%" }} onClick={notify}>
+            <Button
+              variant="primary"
+              style={{ width: "50%" }}
+              onClick={handleSubmit(Login)}
+            >
               Entrar
             </Button>
             <Link to="/register" style={{ width: "50%" }}>

@@ -12,7 +12,7 @@
 
 .MainContainer {
     width: 80%;
-    height: 70%;
+    height: 75%;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -50,7 +50,6 @@
         font-size: 30px;
         color: #0073f0;
     }
-
 }
 
 .ButtonSection {
@@ -63,8 +62,11 @@
 }
 
 .FormSection {
-    margin-top: 10px;
     width: 70%;
     justify-content: center;
     align-items: center;
+
+    span {
+        color: red;
+    }
 }
