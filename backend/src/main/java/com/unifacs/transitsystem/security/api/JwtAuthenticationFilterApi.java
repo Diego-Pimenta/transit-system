@@ -35,12 +35,12 @@ public class JwtAuthenticationFilterApi extends UsernamePasswordAuthenticationFi
             HttpServletResponse response
     ) throws AuthenticationException {
         try {
-            User creds = new ObjectMapper()
+            User user = new ObjectMapper()
                     .readValue(request.getInputStream(), User.class);
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            creds.getUsername(),
-                            creds.getPassword(),
+                            user.getUsername(),
+                            user.getPassword(),
                             new ArrayList<>()
                     )
             );

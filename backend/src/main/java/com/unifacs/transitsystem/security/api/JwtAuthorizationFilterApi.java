@@ -40,18 +40,18 @@ public class JwtAuthorizationFilterApi extends BasicAuthenticationFilter {
 
     private UsernamePasswordAuthenticationToken authorizeRequest(HttpServletRequest request) {
         String token = request.getHeader(HEADER_STRING);
-        if(token != null) {
-            Claims claims = Jwts.parser()
-                    .setSigningKey(SECRET)
-                    .build()
-                    .parseSignedClaims(token.replace(TOKEN_PREFIX, ""))
-                    .getPayload();
-            String user = claims.getSubject();
-            if(user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
-            }
+        if(token == null) {
             return null;
         }
-        return null;
+        Claims claims = Jwts.parser()
+                .setSigningKey(SECRET)
+                .build()
+                .parseSignedClaims(token.replace(TOKEN_PREFIX, ""))
+                .getPayload();
+        String user = claims.getSubject();
+        if(user != null) {
+            return null;
+        }
+        return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
     }
 }

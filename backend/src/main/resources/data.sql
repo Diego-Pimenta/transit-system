@@ -1,13 +1,13 @@
-INSERT INTO user (id, cpf, name, address, phone_number, email, password)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), '12345678901', 'John Doe', '123 Main St', '123-456-7890', 'john@example.com', 'password123');
-INSERT INTO user (id, cpf, name, address, phone_number, email, password)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), '12345678902', 'Jane Smith', '456 Elm St', '987-654-3210', 'jane@example.com', 'securepassword');
-INSERT INTO user (id, cpf, name, address, phone_number, email, password)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), '12345678903', 'Alice Johnson', '789 Oak Ave', '555-123-4567', 'alice@example.com', 'abc123');
-INSERT INTO user (id, cpf, name, address, phone_number, email, password)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), '12345678904', 'Bob Brown', '101 Pine Rd', '888-222-3333', 'bob@example.com', 'qwerty');
-INSERT INTO user (id, cpf, name, address, phone_number, email, password)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), '12345678905', 'Charlie Green', '246 Cedar Ln', '444-555-6666', 'charlie@example.com', 'pass123');
+INSERT INTO user (id, cpf, name, address, phone_number, email, password, role)
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), '12345678901', 'John Doe', '123 Main St', '123-456-7890', 'john@example.com', 'admin123', 'WORKER');
+INSERT INTO user (id, cpf, name, address, phone_number, email, password, role)
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), '12345678902', 'Jane Smith', '456 Elm St', '987-654-3210', 'jane@example.com', 'password1', 'USER');
+INSERT INTO user (id, cpf, name, address, phone_number, email, password, role)
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), '12345678903', 'Alice Johnson', '789 Oak Ave', '555-123-4567', 'alice@example.com', 'password2', 'USER');
+INSERT INTO user (id, cpf, name, address, phone_number, email, password, role)
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), '12345678904', 'Bob Brown', '101 Pine Rd', '888-222-3333', 'bob@example.com', 'password3', 'USER');
+INSERT INTO user (id, cpf, name, address, phone_number, email, password, role)
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), '12345678905', 'Charlie Green', '246 Cedar Ln', '444-555-6666', 'charlie@example.com', 'password4', 'USER');
 
 INSERT INTO vehicle (id, plate, model, color, year)
 VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'ABC123', 'Toyota Corolla', 'Red', 2019);
