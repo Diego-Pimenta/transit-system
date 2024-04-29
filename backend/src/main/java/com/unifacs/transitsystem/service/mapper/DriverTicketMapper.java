@@ -5,9 +5,7 @@ import com.unifacs.transitsystem.model.dto.response.DriverTicketResponseDto;
 import com.unifacs.transitsystem.model.entity.DriverTicket;
 import org.mapstruct.Mapper;
 
-import static org.mapstruct.ReportingPolicy.IGNORE;
-
-@Mapper(componentModel = "spring", uses = { UserMapper.class, VehicleMapper.class, TicketMapper.class }, unmappedTargetPolicy = IGNORE)
+@Mapper(componentModel = "spring", uses = { UserMapper.class, VehicleMapper.class, TicketMapper.class })
 public interface DriverTicketMapper {
 
     DriverTicket driverTicketRequestDtoToDriverTicket(DriverTicketRequestDto driverTicketRequestDto);

@@ -1,6 +1,7 @@
 package com.unifacs.transitsystem.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.unifacs.transitsystem.model.entity.Role;
 
 import java.util.UUID;
 
@@ -12,5 +13,6 @@ public record UserResponseDto(
         @JsonProperty("phone_number")
         String phoneNumber,
         String email,
-        String password
+        String password,
+        Role role
 ) {}
