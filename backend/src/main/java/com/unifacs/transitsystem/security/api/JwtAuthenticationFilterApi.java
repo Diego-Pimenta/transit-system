@@ -1,69 +1,66 @@
 package com.unifacs.transitsystem.security.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.unifacs.transitsystem.model.entity.User;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.unifacs.transitsystem.config.UserDetailsServiceImpl;
+import com.unifacs.transitsystem.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.authentication.AuthenticationManager;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Service;
+import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 
 import static com.unifacs.transitsystem.security.SecurityConstants.*;
 
-public class JwtAuthenticationFilterApi extends UsernamePasswordAuthenticationFilter {
+@Service
+@RequiredArgsConstructor
+public class JwtAuthenticationFilterApi extends OncePerRequestFilter {
 
-    private AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
-    public JwtAuthenticationFilterApi(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-        setFilterProcessesUrl(SIGN_UP_URL);
-    }
+    private final UserDetailsServiceImpl userDetailsService;
+
+    private final HandlerExceptionResolver handlerExceptionResolver;
 
     @Override
-    public Authentication attemptAuthentication(
-            HttpServletRequest request,
-            HttpServletResponse response
-    ) throws AuthenticationException {
-        try {
-            User user = new ObjectMapper()
-                    .readValue(request.getInputStream(), User.class);
-            return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            user.getUsername(),
-                            user.getPassword(),
-                            new ArrayList<>()
-                    )
-            );
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    protected void doFilterInternal(
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain
+    ) throws ServletException, IOException {
+        final String authHeader = request.getHeader(HEADER_STRING);
+        if(authHeader == null || !authHeader.startsWith(TOKEN_PREFIX)) {
+            filterChain.doFilter(request, response);
+            return;
         }
-    }
-
-    @Override
-    protected void successfulAuthentication(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain chain,
-            Authentication auth
-    ) throws IOException, ServletException {
-        String username = ((User) auth.getPrincipal()).getUsername();
-        String token = Jwts.builder()
-                .setSubject(username)
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS512, SECRET)
-                .compact();
-        String body = username + " " + token;
-        response.getWriter().write(body);
-        response.getWriter().flush();
+        try {
+            final String token = authHeader.substring(7);
+            final String userCpf = jwtUtil.extractUsername(token);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (userCpf != null && authentication == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(userCpf);
+                if(jwtUtil.isTokenValid(token, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+            }
+            filterChain.doFilter(request, response);
+        } catch (Exception exception) {
+            handlerExceptionResolver.resolveException(request, response, null, exception);
+        }
     }
 }

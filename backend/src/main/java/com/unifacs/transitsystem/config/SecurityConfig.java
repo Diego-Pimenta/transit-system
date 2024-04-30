@@ -1,24 +1,20 @@
 package com.unifacs.transitsystem.config;
 
-import com.unifacs.transitsystem.handler.CustomLogoutHandler;
 import com.unifacs.transitsystem.security.api.JwtAuthenticationFilterApi;
-import com.unifacs.transitsystem.security.api.JwtAuthorizationFilterApi;
-import com.unifacs.transitsystem.service.impl.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -27,14 +23,13 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final AuthenticationProvider authenticationProvider;
 
-    private final UserDetailsServiceImpl userDetailsService;
-
-//    private final CustomLogoutHandler logoutHandler;
+    private final JwtAuthenticationFilterApi jwtAuthenticationFilterApi;
 
     private static final String[] PUBLIC = {
             "/auth/login"
@@ -52,15 +47,6 @@ public class SecurityConfig {
     };
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(bCryptPasswordEncoder)
-                .and()
-                .build();
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .cors(cors->cors.configurationSource(corsConfigurationSource()))
@@ -74,22 +60,20 @@ public class SecurityConfig {
                                 .authenticated()
                 )
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // creating new objects may cause performance issues
-                .addFilter(new JwtAuthenticationFilterApi(authenticationManager(http)))
-                .addFilter(new JwtAuthorizationFilterApi(authenticationManager(http)))
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthenticationFilterApi, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(
                         e->e.accessDeniedHandler(
                                 (request, response, accessDeniedException)->response.setStatus(403)
                         )
                                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 )
-//                .logout(
-//                        l->l.logoutUrl("/logout")
-//                                .addLogoutHandler(logoutHandler)
-//                                .logoutSuccessHandler(
-//                                        ((request, response, authentication)->SecurityContextHolder.clearContext())
-//                                )
-//                )
+                .logout(
+                        l->l.logoutUrl("/logout")
+                                .logoutSuccessHandler(
+                                        ((request, response, authentication)->SecurityContextHolder.clearContext())
+                                )
+                )
                 .build();
     }
 
@@ -103,12 +87,5 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring()
-                // sample ignored specified requests
-                .requestMatchers("/css/**", "/js/**", "/img/**", "/lib/**", "/favicon.ico");
     }
 }

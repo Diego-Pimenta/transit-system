@@ -1,4 +1,4 @@
-package com.unifacs.transitsystem.service.impl;
+package com.unifacs.transitsystem.config;
 
 import com.unifacs.transitsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
