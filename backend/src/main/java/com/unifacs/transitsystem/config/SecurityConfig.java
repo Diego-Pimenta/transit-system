@@ -52,27 +52,27 @@ public class SecurityConfig {
                 .cors(cors->cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        auth->auth.requestMatchers(PUBLIC)
-                                .permitAll()
+                        auth -> auth
+                                .requestMatchers(PUBLIC).permitAll()
                                 .requestMatchers(USER).hasAnyRole("WORKER", "USER")
                                 .requestMatchers(WORKER).hasRole("WORKER")
-                                .anyRequest()
-                                .authenticated()
+                                .anyRequest().authenticated()
                 )
-                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(
+                        session -> session
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilterApi, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(
-                        e->e.accessDeniedHandler(
-                                (request, response, accessDeniedException)->response.setStatus(403)
-                        )
+                        e -> e
+                                .accessDeniedHandler((request, response, accessDeniedException)->response.setStatus(403))
                                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 )
                 .logout(
-                        l->l.logoutUrl("/logout")
-                                .logoutSuccessHandler(
-                                        ((request, response, authentication)->SecurityContextHolder.clearContext())
-                                )
+                        l -> l
+                                .logoutUrl("/auth/logout")
+                                .logoutSuccessHandler(((request, response, authentication) -> SecurityContextHolder.clearContext()))
                 )
                 .build();
     }
