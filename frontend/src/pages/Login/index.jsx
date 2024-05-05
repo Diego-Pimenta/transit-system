@@ -2,7 +2,7 @@ import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Button from "react-bootstrap/Button";
-import imageBg from "../assets/motorista.png";
+import imageBg from "../../assets/motorista.png";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Link } from "react-router-dom";
 import styles from "./styles.module.css";
@@ -17,7 +17,7 @@ const formValidation = yup.object().shape({
   password: yup.string().required("Campo obrigatório"),
 });
 
-const Home = () => {
+const Login = () => {
   const {
     register,
     handleSubmit,
@@ -130,4 +130,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Login;
