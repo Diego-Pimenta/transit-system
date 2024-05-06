@@ -30,7 +30,7 @@ public class SecurityConfig {
     private final JwtAuthenticationFilterApi jwtAuthenticationFilterApi;
 
     private static final String[] PUBLIC = {
-            "/auth/login"
+            "/auth/**"
     };
 
     private static final String[] USER = {
@@ -53,11 +53,10 @@ public class SecurityConfig {
 //                .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth
-//                                .requestMatchers(WORKER).hasRole("WORKER")
-//                                .requestMatchers(USER).hasAnyRole("WORKER", "USER")
-//                                .requestMatchers(PUBLIC).permitAll()
-//                                .anyRequest().authenticated()
-                                .anyRequest().permitAll()
+                                .requestMatchers(WORKER).hasAuthority("WORKER")
+                                .requestMatchers(USER).hasAnyAuthority("WORKER", "USER")
+                                .requestMatchers(PUBLIC).permitAll()
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

@@ -1,0 +1,113 @@
+{
+	"info": {
+		"_postman_id": "8e7ae622-58cf-4bff-b208-64c5e4f8e1e6",
+		"name": "Transit-System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30036288"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cpf\": \"07511804594\",\r\n    \"password\": \"minhasenha\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-gateway}}/auth/login",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create-User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cpf\": \"07511804594\",\r\n    \"name\": \"Diego Pimenta\",\r\n    \"address\": \"Rua Alguma Coisa\",\r\n    \"phone_number\": \"111-111-1111\",\r\n    \"email\": \"diegopimenta888@gmail.com\",\r\n    \"password\": \"minhasenha\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-gateway}}/auth/register",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIwNzUxMTgwNDU5NCIsImlhdCI6MTcxNDk2ODUyOCwiZXhwIjoxNzE0OTcyMTI4fQ.0vwdSyuaMjc8ehIriih3RQbWSY6GDQpUua1IoDAY27vrH-siX-zHmA1oXOMBbmuj",
+								"uuid": "0377fe3d-8185-4ef4-b77e-993d4decb800"
+							}
+						],
+						"url": {
+							"raw": "{{api-gateway}}/users",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tickets",
+			"item": []
+		},
+		{
+			"name": "Vehicles",
+			"item": []
+		},
+		{
+			"name": "Driver-Tickets",
+			"item": []
+		},
+		{
+			"name": "Search",
+			"item": []
+		}
+	]
+}
