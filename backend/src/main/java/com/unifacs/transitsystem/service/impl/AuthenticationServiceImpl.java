@@ -23,8 +23,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
 
-    private final JwtUtil jwtUtil;
-
     @Override
     public AuthenticationResponseDto authenticate(AuthenticationRequestDto authenticationRequestDto) {
         authenticationManager.authenticate(
@@ -35,9 +33,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         );
         var user = repository.findByCpf(authenticationRequestDto.cpf())
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
-
-        jwtUtil.generateToken(user);
-
         return mapper.userToAuthenticationResponseDto(user);
     }
 }

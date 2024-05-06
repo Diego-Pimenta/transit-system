@@ -14,5 +14,8 @@ public record AuthenticationResponseDto(
         String phoneNumber,
         String email,
         String password,
-        Role role
+        Role role,
+        String token,
+        @JsonProperty("expires_in")
+        long expiresIn
 ) {}
