@@ -1,9 +1,11 @@
 import { useState } from "react";
 import Routes from "./routes/routes";
-import "./App.css";
+import styles from "./App.module.css";
+import Topbar from "./components/Topbar/topbar";
+import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
-  const [isAuthenticated] = useState(false);
+  const [isAuthenticated] = useState(true);
 
   // const login = () => {
   //   setIsAuthenticated(true);
@@ -14,11 +16,12 @@ function App() {
   // };
 
   return (
-    <>
-      <div className="App">
+    <Router>
+      <div className={styles.App}>
+        <Topbar />
         <Routes isAuthenticated={isAuthenticated} />
       </div>
-    </>
+    </Router>
   );
 }
 
