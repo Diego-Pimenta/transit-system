@@ -1,9 +1,11 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /api
+
 spring:
   application:
     name: transit-system
-  port: 8080
-  servlet:
-    context-path: /api
 
   # Database Configuration
   datasource:
@@ -27,10 +29,3 @@ spring:
   sql:
     init:
       mode: always
-
-# Detailed Logs
-logging:
-  level:
-    org:
-      springframework:
-        security: debug

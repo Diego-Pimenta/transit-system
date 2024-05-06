@@ -8,5 +8,4 @@ public record AuthenticationRequestDto(
 
         @NotBlank
         String password
-) {
-}
+) {}

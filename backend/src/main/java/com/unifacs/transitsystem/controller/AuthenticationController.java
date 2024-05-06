@@ -3,6 +3,7 @@ package com.unifacs.transitsystem.controller;
 import com.unifacs.transitsystem.model.dto.request.AuthenticationRequestDto;
 import com.unifacs.transitsystem.model.dto.response.AuthenticationResponseDto;
 import com.unifacs.transitsystem.service.impl.AuthenticationServiceImpl;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponseDto> login(
-            @RequestBody AuthenticationRequestDto authenticationRequestDto
+            @RequestBody @Valid AuthenticationRequestDto authenticationRequestDto
     ) {
         return ResponseEntity.ok(service.authenticate(authenticationRequestDto));
     }
