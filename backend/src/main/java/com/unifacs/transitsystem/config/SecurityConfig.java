@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -50,22 +49,17 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-//                .formLogin(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers(WORKER).hasAuthority("WORKER")
-                                .requestMatchers(USER).hasAnyAuthority("WORKER", "USER")
                                 .requestMatchers(PUBLIC).permitAll()
+                                .requestMatchers(USER).hasAnyAuthority("WORKER", "USER")
+                                .requestMatchers(WORKER).hasAuthority("WORKER")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilterApi, UsernamePasswordAuthenticationFilter.class)
-                .logout(
-                        logout -> logout
-                                .logoutUrl("/auth/logout")
-                                .logoutSuccessHandler(((request, response, authentication) -> SecurityContextHolder.clearContext()))
-                )
                 .build();
     }
 

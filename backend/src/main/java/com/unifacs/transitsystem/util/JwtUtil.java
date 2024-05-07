@@ -1,9 +1,11 @@
 package com.unifacs.transitsystem.util;
 
+import com.unifacs.transitsystem.service.impl.InMemoryTokenBlacklist;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +18,10 @@ import java.util.function.Function;
 import static com.unifacs.transitsystem.security.SecurityConstants.*;
 
 @Component
+@RequiredArgsConstructor
 public class JwtUtil {
+
+    private final InMemoryTokenBlacklist tokenBlacklist;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -27,19 +32,19 @@ public class JwtUtil {
         return claimsResolver.apply(claims);
     }
 
-    public static String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
 
-    public static String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return buildToken(extraClaims, userDetails, EXPIRATION_TIME);
     }
 
-    public static long getExpirationTime() {
+    public long getExpirationTime() {
         return EXPIRATION_TIME;
     }
 
-    public static String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
+    public String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
@@ -52,7 +57,7 @@ public class JwtUtil {
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token) && !tokenBlacklist.isBlacklisted(token));
     }
 
     public boolean isTokenExpired(String token) {
@@ -72,7 +77,7 @@ public class JwtUtil {
                 .getPayload();
     }
 
-    public static Key getSignInKey() {
+    public Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
     }

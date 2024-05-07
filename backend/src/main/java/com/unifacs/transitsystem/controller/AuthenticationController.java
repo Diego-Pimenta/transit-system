@@ -5,7 +5,7 @@ import com.unifacs.transitsystem.model.dto.request.CreateUserRequestDto;
 import com.unifacs.transitsystem.model.dto.response.AuthenticationResponseDto;
 import com.unifacs.transitsystem.model.dto.response.UserResponseDto;
 import com.unifacs.transitsystem.service.impl.AuthenticationServiceImpl;
-import com.unifacs.transitsystem.service.impl.UserServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,15 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthenticationController {
 
-    private final UserServiceImpl userService;
-
     private final AuthenticationServiceImpl authService;
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDto> register(
             @RequestBody @Valid CreateUserRequestDto createUserRequestDto
     ) {
-        return ResponseEntity.ok(userService.createUser(createUserRequestDto));
+        return ResponseEntity.status(201).body(authService.register(createUserRequestDto));
     }
 
     @PostMapping("/login")
@@ -35,5 +33,11 @@ public class AuthenticationController {
             @RequestBody @Valid AuthenticationRequestDto authenticationRequestDto
     ) {
         return ResponseEntity.ok(authService.authenticate(authenticationRequestDto));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletRequest request) {
+        authService.logout(request);
+        return ResponseEntity.noContent().build();
     }
 }

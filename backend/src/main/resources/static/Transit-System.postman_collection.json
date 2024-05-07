@@ -11,12 +11,27 @@
 			"item": [
 				{
 					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 && pm.response.json().token) {\r",
+									"    var token = pm.response.json().token;\r",
+									"    pm.environment.set(\"token\", token);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"cpf\": \"07511804594\",\r\n    \"password\": \"minhasenha\"\r\n}",
+							"raw": "{\r\n    \"cpf\": \"12345678901\",\r\n    \"password\": \"admin123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -35,14 +50,37 @@
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "Users",
-			"item": [
+				},
 				{
-					"name": "Create-User",
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{api-gateway}}/auth/logout",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -67,18 +105,27 @@
 						}
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
 				{
 					"name": "Get-Users",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIwNzUxMTgwNDU5NCIsImlhdCI6MTcxNDk2ODUyOCwiZXhwIjoxNzE0OTcyMTI4fQ.0vwdSyuaMjc8ehIriih3RQbWSY6GDQpUua1IoDAY27vrH-siX-zHmA1oXOMBbmuj",
-								"uuid": "0377fe3d-8185-4ef4-b77e-993d4decb800"
-							}
-						],
+						"header": [],
 						"url": {
 							"raw": "{{api-gateway}}/users",
 							"host": [
