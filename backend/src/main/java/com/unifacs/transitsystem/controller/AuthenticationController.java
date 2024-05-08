@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.springframework.http.HttpStatus.*;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
@@ -25,7 +27,7 @@ public class AuthenticationController {
     public ResponseEntity<UserResponseDto> register(
             @RequestBody @Valid CreateUserRequestDto createUserRequestDto
     ) {
-        return ResponseEntity.status(201).body(authService.register(createUserRequestDto));
+        return ResponseEntity.status(CREATED).body(authService.register(createUserRequestDto));
     }
 
     @PostMapping("/login")

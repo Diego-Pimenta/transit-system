@@ -1,6 +1,7 @@
 package com.unifacs.transitsystem.service.impl;
 
-import com.unifacs.transitsystem.exception.MissingRequestHeaderException;
+import com.unifacs.transitsystem.exception.RequestHeaderMissingException;
+import com.unifacs.transitsystem.exception.ResourceNotFoundException;
 import com.unifacs.transitsystem.model.dto.request.AuthenticationRequestDto;
 import com.unifacs.transitsystem.model.dto.request.CreateUserRequestDto;
 import com.unifacs.transitsystem.model.dto.response.AuthenticationResponseDto;
@@ -15,8 +16,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
-import java.util.NoSuchElementException;
 
 import static com.unifacs.transitsystem.security.SecurityConstants.*;
 
@@ -50,7 +49,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 )
         );
         var user = repository.findByCpf(authenticationRequestDto.cpf())
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         var token = jwtUtil.generateToken(user);
         var expiration = jwtUtil.getExpirationTime();
@@ -66,7 +65,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             var token = authHeader.substring(7);
             tokenBlacklist.addToBlacklist(token);
         } else {
-            throw new MissingRequestHeaderException("Authorization header is missing");
+            throw new RequestHeaderMissingException("Authorization header is missing");
         }
     }
 }

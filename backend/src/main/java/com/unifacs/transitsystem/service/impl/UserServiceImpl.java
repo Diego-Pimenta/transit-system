@@ -1,5 +1,6 @@
 package com.unifacs.transitsystem.service.impl;
 
+import com.unifacs.transitsystem.exception.UserAlreadyExistsException;
 import com.unifacs.transitsystem.model.dto.request.CreateUserRequestDto;
 import com.unifacs.transitsystem.model.dto.request.UpdateUserRequestDto;
 import com.unifacs.transitsystem.model.dto.response.UserResponseDto;
@@ -25,10 +26,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto createUser(CreateUserRequestDto createUserRequestDto) {
-        var user = mapper.createUserRequestDtoToUser(createUserRequestDto);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        var createdUser = repository.save(user);
-        return mapper.userToUserResponseDto(createdUser);
+        try {
+            var user = mapper.createUserRequestDtoToUser(createUserRequestDto);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            var createdUser = repository.save(user);
+            return mapper.userToUserResponseDto(createdUser);
+        } catch (Exception e) {
+            throw new UserAlreadyExistsException("Already exists an user with this CPF");
+        }
     }
 
     @Override
