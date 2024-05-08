@@ -10,35 +10,35 @@ INSERT INTO user (id, cpf, name, address, phone_number, email, password, role)
 VALUES (UNHEX(REPLACE(UUID(), '-', '')), '12345678905', 'Charlie Green', '246 Cedar Ln', '444-555-6666', 'charlie@example.com', '$2a$10$uJJ9mQ.Zre74x4zfiqogBOSeU8F2SSUlsTfhazrglmiQeZ4AClppW', 'USER');
 
 INSERT INTO vehicle (id, plate, model, color, year)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'ABC123', 'Toyota Corolla', 'Red', 2019);
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'MOU7919', 'Toyota Corolla', 'Red', 2019);
 INSERT INTO vehicle (id, plate, model, color, year)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'XYZ789', 'Honda Civic', 'Blue', 2018);
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'NFB3086', 'Honda Civic', 'Blue', 2018);
 INSERT INTO vehicle (id, plate, model, color, year)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'DEF456', 'Ford Mustang', 'Black', 2020);
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'NET7890', 'Ford Mustang', 'Black', 2020);
 INSERT INTO vehicle (id, plate, model, color, year)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'GHI789', 'Chevrolet Silverado', 'White', 2021);
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'JAZ1848', 'Chevrolet Silverado', 'White', 2021);
 INSERT INTO vehicle (id, plate, model, color, year)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'JKL321', 'Jeep Wrangler', 'Green', 2017);
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'HQN4544', 'Jeep Wrangler', 'Green', 2017);
 INSERT INTO vehicle (id, plate, model, color, year)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'MNO456', 'Tesla Model S', 'Silver', 2022);
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'GMA7327', 'Tesla Model S', 'Silver', 2022);
 INSERT INTO vehicle (id, plate, model, color, year)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'PQR789', 'BMW X5', 'Gray', 2016);
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'HZF7104', 'BMW X5', 'Gray', 2016);
 INSERT INTO vehicle (id, plate, model, color, year)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'STU012', 'Audi Q7', 'Brown', 2023);
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'MFC5702', 'Audi Q7', 'Brown', 2023);
 INSERT INTO vehicle (id, plate, model, color, year)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'VWX345', 'Mercedes-Benz C-Class', 'Gold', 2015);
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'NEK1602', 'Mercedes-Benz C-Class', 'Gold', 2015);
 INSERT INTO vehicle (id, plate, model, color, year)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'YZA678', 'Subaru Outback', 'Orange', 2024);
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'IFO2978', 'Subaru Outback', 'Orange', 2024);
 INSERT INTO vehicle (id, plate, model, color, year)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'BCD901', 'Lexus RX', 'Purple', 2014);
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'NCH5557', 'Lexus RX', 'Purple', 2014);
 INSERT INTO vehicle (id, plate, model, color, year)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'EFG234', 'Volkswagen Golf', 'Yellow', 2025);
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'LRV1403', 'Volkswagen Golf', 'Yellow', 2025);
 INSERT INTO vehicle (id, plate, model, color, year)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'HIJ567', 'Hyundai Sonata', 'Turquoise', 2013);
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'MUY9246', 'Hyundai Sonata', 'Turquoise', 2013);
 INSERT INTO vehicle (id, plate, model, color, year)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'KLM890', 'Mazda CX-5', 'Beige', 2026);
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'JMS4654', 'Mazda CX-5', 'Beige', 2026);
 INSERT INTO vehicle (id, plate, model, color, year)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'NOP123', 'Kia Sportage', 'Maroon', 2012);
+VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'JTI7979', 'Kia Sportage', 'Maroon', 2012);
 
 INSERT INTO ticket (id, category, description, cost, date_time)
 VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'Speeding', 'Exceeded speed limit by 20 mph', 150.00, '2024-04-20 09:15:00');

@@ -13,6 +13,5 @@ public record TicketResponseDto(
         String description,
         BigDecimal cost,
         @JsonProperty("date_time")
-        @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
         LocalDateTime dateTime
 ) {}
