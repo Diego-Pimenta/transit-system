@@ -6,6 +6,6 @@ public record UpdateVehicleRequestDto(
         String model,
         String color,
 
-        @Min(0)
+        @Min(value = 0, message = "Year must be a positive number")
         int year
 ) {}

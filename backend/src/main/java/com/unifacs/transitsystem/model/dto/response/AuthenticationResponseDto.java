@@ -5,7 +5,7 @@ import com.unifacs.transitsystem.model.entity.Role;
 
 import java.util.UUID;
 
-public record UserResponseDto(
+public record AuthenticationResponseDto(
         UUID id,
         String cpf,
         String name,
@@ -14,5 +14,8 @@ public record UserResponseDto(
         String phoneNumber,
         String email,
         String password,
-        Role role
+        Role role,
+        String token,
+        @JsonProperty("expires_in")
+        long expiresIn
 ) {}

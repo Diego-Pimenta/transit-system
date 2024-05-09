@@ -11,10 +11,9 @@ public record UpdateTicketRequestDto(
         String category,
         String description,
 
-        @Min(0)
+        @Min(value = 0, message = "Cost must be a positive number")
         BigDecimal cost,
 
         @JsonProperty("date_time")
-        @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
         LocalDateTime dateTime
 ) {}

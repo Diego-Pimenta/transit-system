@@ -10,18 +10,17 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record CreateTicketRequestDto(
-        @NotBlank
+        @NotBlank(message = "Category must not be blank")
         String category,
 
-        @NotBlank
+        @NotBlank(message = "Description must not be blank")
         String description,
 
-        @NotNull
-        @Min(0)
+        @NotNull(message = "Cost must not be null")
+        @Min(value = 0, message = "Cost must be a positive number")
         BigDecimal cost,
 
-        @NotNull
+        @NotNull(message = "Date and time must not be null")
         @JsonProperty("date_time")
-        @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
         LocalDateTime dateTime
 ) {}
