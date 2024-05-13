@@ -86,7 +86,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"cpf\": \"07511804594\",\r\n    \"name\": \"Diego Pimenta\",\r\n    \"address\": \"Rua Alguma Coisa\",\r\n    \"phone_number\": \"111-111-1111\",\r\n    \"email\": \"diegopimenta888@gmail.com\",\r\n    \"password\": \"minhasenha\"\r\n}",
+							"raw": "{\r\n    \"cpf\": \"12345678906\",\r\n    \"name\": \"Emily White\",\r\n    \"address\": \"369 Maple Ave\",\r\n    \"phone_number\": \"777-888-9999\",\r\n    \"email\": \"emily@example.com\",\r\n    \"password\": \"password5\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -112,18 +112,52 @@
 			"name": "Users",
 			"item": [
 				{
+					"name": "Add-User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cpf\": \"12345678907\",\r\n    \"name\": \"David Lee\",\r\n    \"address\": \"852 Birch St\",\r\n    \"phone_number\": \"111-222-3333\",\r\n    \"email\": \"david@example.com\",\r\n    \"password\": \"password6\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-gateway}}/users",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-User-By-Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-gateway}}/users/893cc875-1099-11ef-9cec-0242ac120002",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"users",
+								"893cc875-1099-11ef-9cec-0242ac120002"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get-Users",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -137,24 +171,527 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Update-User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"address\": \"753 Oakwood Dr\",\r\n    \"phone_number\": \"666-777-8888\",\r\n    \"email\": \"emma@example.com\",\r\n    \"password\": \"password7\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-gateway}}/users/893cc875-1099-11ef-9cec-0242ac120002",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"users",
+								"893cc875-1099-11ef-9cec-0242ac120002"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete-User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api-gateway}}/users/893cc875-1099-11ef-9cec-0242ac120002",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"users",
+								"893cc875-1099-11ef-9cec-0242ac120002"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
 		{
 			"name": "Tickets",
-			"item": []
+			"item": [
+				{
+					"name": "Add-Ticket",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"category\": \"Failure to Yield\",\r\n    \"description\": \"Failed to yield at a yield sign\",\r\n    \"cost\": \"170.00\",\r\n    \"emission_date\": \"01-05-2024 08:45\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-gateway}}/tickets",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"tickets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Ticket-By-Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-gateway}}/tickets/eb57e93c-1099-11ef-9cec-0242ac120002",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"tickets",
+								"eb57e93c-1099-11ef-9cec-0242ac120002"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Tickets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-gateway}}/tickets",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"tickets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update-Ticket",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"category\": \"Expired Registration\",\r\n    \"description\": \"Driving with expired vehicle registration\",\r\n    \"cost\": \"220.00\",\r\n    \"emission_date\": \"02-05-2024 14:15\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-gateway}}/tickets/eb57e93c-1099-11ef-9cec-0242ac120002",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"tickets",
+								"eb57e93c-1099-11ef-9cec-0242ac120002"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete-Ticket",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api-gateway}}/tickets/eb57e93c-1099-11ef-9cec-0242ac120002",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"tickets",
+								"eb57e93c-1099-11ef-9cec-0242ac120002"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
 		},
 		{
 			"name": "Vehicles",
-			"item": []
+			"item": [
+				{
+					"name": "Create-Vehicle",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"plate\": \"NXB2468\",\r\n    \"model\": \"Volvo XC60\",\r\n    \"color\": \"Silver\",\r\n    \"year\": \"2017\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-gateway}}/vehicles",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"vehicles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Vehicle-By-Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-gateway}}/vehicles/eb3e38c3-1099-11ef-9cec-0242ac120002",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"vehicles",
+								"eb3e38c3-1099-11ef-9cec-0242ac120002"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Vehicles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-gateway}}/vehicles",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"vehicles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update-Vehicle",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"model\": \"Jeep Grand Cherokee\",\r\n    \"color\": \"Black\",\r\n    \"year\": \"2022\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-gateway}}/vehicles/eb3e38c3-1099-11ef-9cec-0242ac120002",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"vehicles",
+								"eb3e38c3-1099-11ef-9cec-0242ac120002"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete-Vehicle",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api-gateway}}/vehicles/eb3e38c3-1099-11ef-9cec-0242ac120002",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"vehicles",
+								"eb3e38c3-1099-11ef-9cec-0242ac120002"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
 		},
 		{
 			"name": "Driver-Tickets",
-			"item": []
+			"item": [
+				{
+					"name": "Create-Driver-Ticket",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_cpf\": \"12345678902\",\r\n    \"ticket_id\": \"51b3adab-109c-11ef-9cec-0242ac120002\",\r\n    \"vehicle_plate\": \"MOU7919\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-gateway}}/driver-tickets",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"driver-tickets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete-Driver-Ticket",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api-gateway}}/driver-tickets/7846eddf-b8ab-4ba4-892b-7cbe8f330a5e",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"driver-tickets",
+								"7846eddf-b8ab-4ba4-892b-7cbe8f330a5e"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
 		},
 		{
 			"name": "Search",
-			"item": []
+			"item": [
+				{
+					"name": "Get-Driver-Tickets-By-User-Cpf",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-gateway}}/search/user/12345678902",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"search",
+								"user",
+								"12345678902"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Driver-Tickets-By-Vehicle-Plate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-gateway}}/search/vehicle/MOU7919",
+							"host": [
+								"{{api-gateway}}"
+							],
+							"path": [
+								"search",
+								"vehicle",
+								"MOU7919"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
 		}
 	]
 }

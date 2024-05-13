@@ -40,23 +40,23 @@ VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'JMS4654', 'Mazda CX-5', 'Beige', 2026)
 INSERT INTO vehicle (id, plate, model, color, year)
 VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'JTI7979', 'Kia Sportage', 'Maroon', 2012);
 
-INSERT INTO ticket (id, category, description, cost, date_time)
+INSERT INTO ticket (id, category, description, cost, emission_date)
 VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'Speeding', 'Exceeded speed limit by 20 mph', 150.00, '2024-04-20 09:15:00');
-INSERT INTO ticket (id, category, description, cost, date_time)
+INSERT INTO ticket (id, category, description, cost, emission_date)
 VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'Red Light Violation', 'Crossed the intersection after the light turned red', 200.00, '2024-04-21 12:30:00');
-INSERT INTO ticket (id, category, description, cost, date_time)
+INSERT INTO ticket (id, category, description, cost, emission_date)
 VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'Illegal Parking', 'Parked in a no-parking zone', 100.00, '2024-04-22 15:45:00');
-INSERT INTO ticket (id, category, description, cost, date_time)
+INSERT INTO ticket (id, category, description, cost, emission_date)
 VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'Distracted Driving', 'Texting while driving', 250.00, '2024-04-23 17:00:00');
-INSERT INTO ticket (id, category, description, cost, date_time)
+INSERT INTO ticket (id, category, description, cost, emission_date)
 VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'Seatbelt Violation', 'Driver not wearing a seatbelt', 120.00, '2024-04-24 14:20:00');
-INSERT INTO ticket (id, category, description, cost, date_time)
+INSERT INTO ticket (id, category, description, cost, emission_date)
 VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'Failure to Stop at a Stop Sign', 'Did not come to a complete stop at the stop sign', 180.00, '2024-04-25 11:10:00');
-INSERT INTO ticket (id, category, description, cost, date_time)
+INSERT INTO ticket (id, category, description, cost, emission_date)
 VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'Expired License', 'Driving with an expired license', 300.00, '2024-04-26 16:55:00');
-INSERT INTO ticket (id, category, description, cost, date_time)
+INSERT INTO ticket (id, category, description, cost, emission_date)
 VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'Reckless Driving', 'Swerving in and out of lanes', 400.00, '2024-04-27 13:40:00');
-INSERT INTO ticket (id, category, description, cost, date_time)
+INSERT INTO ticket (id, category, description, cost, emission_date)
 VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'Improper Lane Change', 'Changing lanes without signaling', 160.00, '2024-04-28 10:05:00');
-INSERT INTO ticket (id, category, description, cost, date_time)
+INSERT INTO ticket (id, category, description, cost, emission_date)
 VALUES (UNHEX(REPLACE(UUID(), '-', '')), 'Driving Under the Influence', 'Caught driving while intoxicated', 500.00, '2024-04-29 18:25:00');
