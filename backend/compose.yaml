@@ -18,13 +18,14 @@ services:
     image: diegopimenta/transit-system-backend:latest
     container_name: transit-system
     ports:
-      - "8081:8081"
+      - 8081:8081
     environment:
       HOST: mysqldb
     depends_on:
       - mysqldb
     networks:
       - springmysql
+    restart: on-failure
 
 volumes:
   data:
