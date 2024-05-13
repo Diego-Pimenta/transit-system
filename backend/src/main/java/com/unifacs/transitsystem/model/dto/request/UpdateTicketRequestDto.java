@@ -14,6 +14,7 @@ public record UpdateTicketRequestDto(
         @Min(value = 0, message = "Cost must be a positive number")
         BigDecimal cost,
 
-        @JsonProperty("date_time")
-        LocalDateTime dateTime
+        @JsonProperty("emission_date")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
+        LocalDateTime emissionDate
 ) {}

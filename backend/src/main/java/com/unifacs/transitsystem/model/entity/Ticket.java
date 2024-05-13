@@ -1,6 +1,12 @@
 package com.unifacs.transitsystem.model.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -21,6 +27,9 @@ public class Ticket {
 
     private BigDecimal cost;
 
-    @Column(name = "date_time")
-    private LocalDateTime dateTime;
+    @Column(name = "emission_date")
+    private LocalDateTime emissionDate;
+
+    @OneToOne(mappedBy = "ticket", orphanRemoval = true)
+    private DriverTicket driverTicket;
 }

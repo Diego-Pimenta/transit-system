@@ -26,7 +26,7 @@ public class DriverTicket {
     private User user;
 
     @OneToOne
-    @JoinColumn(name = "ticket_id")
+    @JoinColumn(name = "ticket_id", referencedColumnName = "id")
     private Ticket ticket;
 
     @ManyToOne

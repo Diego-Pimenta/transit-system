@@ -20,7 +20,8 @@ public record CreateTicketRequestDto(
         @Min(value = 0, message = "Cost must be a positive number")
         BigDecimal cost,
 
-        @NotNull(message = "Date and time must not be null")
-        @JsonProperty("date_time")
-        LocalDateTime dateTime
+        @NotNull(message = "Emission date must not be null")
+        @JsonProperty("emission_date")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
+        LocalDateTime emissionDate
 ) {}
