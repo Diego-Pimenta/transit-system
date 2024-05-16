@@ -9,13 +9,18 @@ import "react-toastify/dist/ReactToastify.css";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
 
 const formValidation = yup.object().shape({
   name: yup.string().required("Campo obrigatório"),
   cpf: yup.string().required("Campo obrigatório"),
   phone: yup.string().required("Campo obrigatório"),
   address: yup.string().required("Campo obrigatório"),
-  password: yup.string().required("Campo obrigatório"),
+  password: yup
+    .string()
+    .min(8, "Mínimo de 8 caracteres!")
+    .max(20, "Máximo de 20 caracteres!")
+    .required("Campo obrigatório"),
   email: yup.string().required("Campo obrigatório"),
 });
 
@@ -50,8 +55,28 @@ const Register = () => {
     setValue("cpf", formattedValue);
   };
 
-  const Register = (data) => {
-    console.log(data);
+  const removeSpecialChars = (str) => str.replace(/[.-]/g, "");
+
+  const Register = async (data) => {
+    try {
+      const cpf = removeSpecialChars(watch("cpf"));
+
+      const resp = await axios.post("http://localhost:8081/api/auth/register", {
+        cpf: cpf,
+        name: watch("name"),
+        address: watch("address"),
+        phone_number: watch("phone"),
+        email: watch("email"),
+        password: watch("password"),
+      });
+
+      if (resp.status === 201) {
+        toast.success("Usuário cadastrado com sucesso!");
+        navigate("/login");
+      }
+    } catch (error) {
+      toast.error("Resposta inesperada do servidor, contate o suporte!");
+    }
   };
 
   return (

@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./topbar.module.css";
 import logoDetran from "../../assets/logo-detran.png";
 import { FaRegUserCircle } from "react-icons/fa";
 import Button from "react-bootstrap/Button";
 import { useNavigate, Link } from "react-router-dom";
 
-const Topbar = () => {
+const Topbar = (props) => {
   const [perfilVisivel, setPerfilVisivel] = useState(false);
+  const [cpf, setCpf] = useState("");
   const navigate = useNavigate();
 
   const togglePerfil = () => {
@@ -15,8 +16,21 @@ const Topbar = () => {
 
   const Logout = async () => {
     setPerfilVisivel(false);
+    localStorage.removeItem("token");
     navigate("/");
   };
+
+  function formatarCPF(cpf) {
+    cpf = cpf?.replace(/\D/g, "");
+    cpf = cpf?.replace(/(\d{3})(\d)/, "$1.$2");
+    cpf = cpf?.replace(/(\d{3})(\d)/, "$1.$2");
+    cpf = cpf?.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    return cpf;
+  }
+
+  useEffect(() => {
+    setCpf(formatarCPF(props?.userData?.cpf));
+  }, [props?.userData]);
 
   return (
     <div className={styles.topbar}>
@@ -46,12 +60,12 @@ const Topbar = () => {
       {perfilVisivel && (
         <div className={styles.user}>
           <div className={styles.containerUser}>
-            <span>NOME DO USUARIO:</span>
-            <h6>Fernando</h6>
+            <span>NOME DO USUÁRIO:</span>
+            <h6>{props?.userData?.name}</h6>
             <span>EMAIL:</span>
-            <h6>fc.caires@hotmail.com</h6>
+            <h6>{props?.userData?.email}</h6>
             <span>CPF:</span>
-            <h6>000.000.000-00</h6>
+            <h6>{cpf}</h6>
             <Button
               variant="primary"
               style={{ width: "100%" }}

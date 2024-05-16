@@ -4,20 +4,21 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Button from "react-bootstrap/Button";
 import imageBg from "../../assets/motorista.png";
 import ReCAPTCHA from "react-google-recaptcha";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./styles.module.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
 
 const formValidation = yup.object().shape({
   cpf: yup.string().required("Campo obrigatório"),
   password: yup.string().required("Campo obrigatório"),
 });
 
-const Login = () => {
+const Login = (props) => {
   const {
     register,
     handleSubmit,
@@ -27,10 +28,11 @@ const Login = () => {
   } = useForm({
     resolver: yupResolver(formValidation),
   });
-  const notifyForm = () => toast.error("CPF ou senha incorreto!");
-  const notifyRecaptch = () => toast.error("Confirme que você não é um robô!");
+
+  const navigate = useNavigate();
 
   const [recaptchaFilled, setRecaptchaFilled] = useState(false);
+  const [token, setToken] = useState(null);
 
   const handleInputChange = (event) => {
     let inputValue = event.target.value.replace(/\D/g, "");
@@ -50,12 +52,28 @@ const Login = () => {
     setValue("cpf", formattedValue);
   };
 
-  const Login = (data) => {
-    console.log(data);
-    if (recaptchaFilled) {
-      notifyForm();
-    } else {
-      notifyRecaptch();
+  const removeSpecialChars = (str) => str.replace(/[.-]/g, "");
+
+  const Login = async () => {
+    try {
+      const cpf = removeSpecialChars(watch("cpf"));
+
+      const resp = await axios.post("http://localhost:8081/api/auth/login", {
+        cpf: cpf,
+        password: watch("password"),
+      });
+
+      if (resp.status === 200) {
+        localStorage.setItem("token", resp.data.token);
+        setToken(resp.data.token);
+        navigate("/home");
+        props.setUserData(resp.data);
+      } else {
+        toast.error("Resposta inesperada do servidor, contate o suporte!");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Cpf ou senha incorreta!");
     }
   };
 
