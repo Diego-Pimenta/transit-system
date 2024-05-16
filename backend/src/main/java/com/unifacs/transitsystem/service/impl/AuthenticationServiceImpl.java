@@ -7,17 +7,18 @@ import com.unifacs.transitsystem.model.dto.request.CreateUserRequestDto;
 import com.unifacs.transitsystem.model.dto.response.AuthenticationResponseDto;
 import com.unifacs.transitsystem.model.dto.response.UserResponseDto;
 import com.unifacs.transitsystem.repository.UserRepository;
+import com.unifacs.transitsystem.security.SecurityConstants;
 import com.unifacs.transitsystem.service.AuthenticationService;
 import com.unifacs.transitsystem.service.mapper.AuthenticationMapper;
+import com.unifacs.transitsystem.service.mapper.UserMapper;
 import com.unifacs.transitsystem.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
-import static com.unifacs.transitsystem.security.SecurityConstants.*;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +28,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository repository;
 
-    private final AuthenticationMapper mapper;
+    private final AuthenticationMapper authenticationMapper;
+
+    private final UserMapper userMapper;
 
     private final AuthenticationManager authenticationManager;
 
@@ -54,14 +57,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var token = jwtUtil.generateToken(user);
         var expiration = jwtUtil.getExpirationTime();
 
-        return mapper.userToAuthenticationResponseDto(user, token, expiration);
+        return authenticationMapper.userToAuthenticationResponseDto(userMapper.userToUserResponseDto(user), token, expiration);
     }
 
     @Override
     public void logout(HttpServletRequest request) {
-        var authHeader = request.getHeader(HEADER_STRING);
+        var authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (StringUtils.hasText(authHeader) && authHeader.startsWith(TOKEN_PREFIX)) {
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith(SecurityConstants.TOKEN_PREFIX)) {
             var token = authHeader.substring(7);
             tokenBlacklist.addToBlacklist(token);
         } else {

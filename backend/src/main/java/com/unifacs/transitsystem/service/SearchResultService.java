@@ -1,14 +1,11 @@
 package com.unifacs.transitsystem.service;
 
-import com.unifacs.transitsystem.model.dto.response.AllDriverTicketsResponseDto;
-import com.unifacs.transitsystem.model.dto.response.AllDriverVehiclesResponseDto;
-import com.unifacs.transitsystem.model.dto.response.AllVehicleTicketsResponseDto;
-
-import java.util.List;
+import com.unifacs.transitsystem.model.dto.response.AllDriverTicketsResponse;
+import com.unifacs.transitsystem.model.dto.response.AllVehicleTicketsResponse;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface SearchResultService {
 
-    List<AllDriverVehiclesResponseDto> getAllDriverVehiclesByUserCpf(String userCpf);
-    List<AllDriverTicketsResponseDto> getAllDriverTicketsByUserCpf(String userCpf);
-    List<AllVehicleTicketsResponseDto> getAllDriverTicketsByVehicle(String vehiclePlate);
+    AllDriverTicketsResponse getAllDriverTicketsByUserCpf(String userCpf);
+    AllVehicleTicketsResponse getAllDriverTicketsByVehicle(String vehiclePlate);
 }

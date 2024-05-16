@@ -1,18 +1,17 @@
 package com.unifacs.transitsystem.util;
 
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Component
 public class DateUtil {
 
-    private static final DateTimeFormatter formatRequest = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    private static final DateTimeFormatter formatResponse = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public static LocalDateTime formatRequestDate(LocalDateTime incomingDate) {
-        return LocalDateTime.parse(incomingDate.format(formatRequest));
-    }
-
-    public static LocalDateTime formatResponseDate(LocalDateTime outgoingDate) {
-        return LocalDateTime.parse(outgoingDate.format(formatResponse));
+    public LocalDateTime formatDate(LocalDateTime date) {
+        String formattedDate = date.format(dtf);
+        return LocalDateTime.parse(formattedDate, dtf);
     }
 }

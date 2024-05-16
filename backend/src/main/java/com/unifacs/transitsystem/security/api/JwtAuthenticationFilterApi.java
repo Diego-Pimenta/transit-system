@@ -1,5 +1,6 @@
 package com.unifacs.transitsystem.security.api;
 
+import com.unifacs.transitsystem.security.SecurityConstants;
 import com.unifacs.transitsystem.service.impl.UserDetailsServiceImpl;
 import com.unifacs.transitsystem.util.JwtUtil;
 import jakarta.servlet.FilterChain;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +19,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
-
-import static com.unifacs.transitsystem.security.SecurityConstants.*;
 
 @Component
 @RequiredArgsConstructor
@@ -36,9 +36,9 @@ public class JwtAuthenticationFilterApi extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        final String authHeader = request.getHeader(HEADER_STRING);
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (authHeader == null || !authHeader.startsWith(TOKEN_PREFIX)) {
+        if (authHeader == null || !authHeader.startsWith(SecurityConstants.TOKEN_PREFIX)) {
             filterChain.doFilter(request, response);
             return;
         }

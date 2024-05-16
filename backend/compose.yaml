@@ -25,6 +25,7 @@ services:
       - mysqldb
     networks:
       - springmysql
+    restart: on-failure
 
 volumes:
   data:

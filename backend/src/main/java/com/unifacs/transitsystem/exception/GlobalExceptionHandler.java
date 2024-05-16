@@ -2,6 +2,7 @@ package com.unifacs.transitsystem.exception;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -32,30 +31,28 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(errors);
     }
 
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<Map<String, String>> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
-        Map<String, String> errors = new HashMap<>();
-        errors.put("message", ex.getMessage());
-        return ResponseEntity.badRequest().body(errors);
+    @ExceptionHandler({UserAlreadyExistsException.class, RequestHeaderMissingException.class, DuplicateDriverTicketException.class})
+    public ResponseEntity<Map<String, String>> handleBadRequestException(Exception ex) {
+        return handleException(ex, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleResourceNotFoundExceptionException(ResourceNotFoundException ex) {
-        Map<String, String> errors = new HashMap<>();
-        errors.put("message", ex.getMessage());
-        return ResponseEntity.status(NOT_FOUND).body(errors);
+    public ResponseEntity<Map<String, String>> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        return handleException(ex, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(RequestHeaderMissingException.class)
-    public ResponseEntity<Map<String, String>> handleRequestHeaderMissingException(RequestHeaderMissingException ex) {
+    private ResponseEntity<Map<String, String>> handleException(Exception ex, HttpStatus status) {
         Map<String, String> errors = new HashMap<>();
         errors.put("message", ex.getMessage());
-        return ResponseEntity.badRequest().body(errors);
+        return ResponseEntity.status(status).body(errors);
     }
 
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleSecurityException(Exception ex) {
         ProblemDetail errorDetail = null;
+
+        // TODO: remove before prod
+        ex.printStackTrace();
 
         if (ex instanceof AccessDeniedException) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getMessage());

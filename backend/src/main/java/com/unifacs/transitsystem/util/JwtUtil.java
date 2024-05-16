@@ -1,5 +1,6 @@
 package com.unifacs.transitsystem.util;
 
+import com.unifacs.transitsystem.security.SecurityConstants;
 import com.unifacs.transitsystem.service.impl.InMemoryTokenBlacklist;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -14,8 +15,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-
-import static com.unifacs.transitsystem.security.SecurityConstants.*;
 
 @Component
 @RequiredArgsConstructor
@@ -37,11 +36,11 @@ public class JwtUtil {
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return buildToken(extraClaims, userDetails, EXPIRATION_TIME);
+        return buildToken(extraClaims, userDetails, SecurityConstants.EXPIRATION_TIME);
     }
 
     public long getExpirationTime() {
-        return EXPIRATION_TIME;
+        return SecurityConstants.EXPIRATION_TIME;
     }
 
     public String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
@@ -78,7 +77,7 @@ public class JwtUtil {
     }
 
     public Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET);
+        byte[] keyBytes = Decoders.BASE64.decode(SecurityConstants.SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }
