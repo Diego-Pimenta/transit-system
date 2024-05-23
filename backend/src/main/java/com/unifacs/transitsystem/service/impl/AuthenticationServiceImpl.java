@@ -45,19 +45,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public AuthenticationResponseDto authenticate(AuthenticationRequestDto authenticationRequestDto) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        authenticationRequestDto.cpf(),
-                        authenticationRequestDto.password()
-                )
-        );
-        var user = repository.findByCpf(authenticationRequestDto.cpf())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            authenticationRequestDto.cpf(),
+                            authenticationRequestDto.password()
+                    )
+            );
+            var user = repository.findByCpf(authenticationRequestDto.cpf())
+                    .orElseThrow();
 
-        var token = jwtUtil.generateToken(user);
-        var expiration = jwtUtil.getExpirationTime();
+            var token = jwtUtil.generateToken(user);
+            var expiration = jwtUtil.getExpirationTime();
 
-        return authenticationMapper.userToAuthenticationResponseDto(userMapper.userToUserResponseDto(user), token, expiration);
+            return authenticationMapper.userToAuthenticationResponseDto(userMapper.userToUserResponseDto(user), token, expiration);
+        } catch (Exception ex) {
+            throw new ResourceNotFoundException("User not found");
+        }
     }
 
     @Override
