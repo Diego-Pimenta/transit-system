@@ -1,0 +1,29 @@
+.ticketsTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 95%;
+  height: 100%;
+  color: #246fa8;
+  font-weight: bolder;
+}
+
+.ticketsBody {
+  display: flex;
+  font-weight: 600;
+  width: 100%;
+}
+
+.ticketsData {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+}
+
+.ticketsBtn {
+  width: 30%;
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  gap: 20px
+}

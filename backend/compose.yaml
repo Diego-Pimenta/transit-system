@@ -15,7 +15,7 @@ services:
 
   transit-system:
     build: .
-    # image: diegopimenta/transit-system-backend:latest
+    image: diegopimenta/transit-system-backend:latest
     container_name: transit-system
     ports:
       - 8081:8081

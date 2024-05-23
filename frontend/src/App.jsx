@@ -5,11 +5,12 @@ import Topbar from "./components/Topbar/topbar";
 import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState();
+  const [isAuthenticated, setIsAuthenticated] = useState("");
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    console.log(isAuthenticated);
     if (token) {
       setIsAuthenticated(true);
     } else {
@@ -21,11 +22,14 @@ function App() {
     <Router>
       <div className={styles.App}>
         <Topbar userData={userData} />
-        <Routes isAuthenticated={isAuthenticated} setUserData={setUserData} />
+        <Routes
+          isAuthenticated={isAuthenticated}
+          setUserData={setUserData}
+          userData={userData}
+        />
       </div>
     </Router>
   );
 }
-
 
 export default App;

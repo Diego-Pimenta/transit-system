@@ -32,7 +32,6 @@ const Login = (props) => {
   const navigate = useNavigate();
 
   const [recaptchaFilled, setRecaptchaFilled] = useState(false);
-  const [token, setToken] = useState(null);
 
   const handleInputChange = (event) => {
     let inputValue = event.target.value.replace(/\D/g, "");
@@ -64,15 +63,13 @@ const Login = (props) => {
       });
 
       if (resp.status === 200) {
-        localStorage.setItem("token", resp.data.token);
-        setToken(resp.data.token);
+        localStorage.setItem("token", `Bearer ${resp.data.token}`);
         navigate("/home");
-        props.setUserData(resp.data);
+        props.setUserData(resp.data.user);
       } else {
         toast.error("Resposta inesperada do servidor, contate o suporte!");
       }
     } catch (error) {
-      console.log(error);
       toast.error("Cpf ou senha incorreta!");
     }
   };
