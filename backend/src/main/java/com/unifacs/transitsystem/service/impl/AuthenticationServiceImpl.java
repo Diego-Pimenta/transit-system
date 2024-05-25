@@ -60,7 +60,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             return authenticationMapper.userToAuthenticationResponseDto(userMapper.userToUserResponseDto(user), token, expiration);
         } catch (Exception ex) {
-            throw new ResourceNotFoundException("User not found");
+            throw new ResourceNotFoundException("Authentication failed");
         }
     }
 
