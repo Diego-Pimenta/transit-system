@@ -51,7 +51,7 @@ public class AuthenticationServiceImplTest {
     }
 
     @Test
-    void authenticate_success() {
+    void authenticate_success_returnsAuthentication() {
         AuthenticationRequestDto requestDto = new AuthenticationRequestDto("12345678902", "password1");
 
         User user = new User();
@@ -106,7 +106,7 @@ public class AuthenticationServiceImplTest {
     }
 
     @Test
-    void authenticate_failure() {
+    void authenticate_failure_throwsException() {
         AuthenticationRequestDto authenticationRequestDto = new AuthenticationRequestDto("12345678900", "password");
 
         doThrow(new RuntimeException("Authentication failed"))

@@ -40,7 +40,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void testFindByCpf_notFound() {
+    public void testFindByCpf_userNotFound() {
         String cpf = "00000000000";
 
         when(userRepository.findByCpf(cpf))

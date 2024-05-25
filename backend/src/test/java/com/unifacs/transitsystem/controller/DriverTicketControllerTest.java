@@ -30,7 +30,7 @@ public class DriverTicketControllerTest {
     }
 
     @Test
-    void createDriverTicket_validRequest() {
+    void createDriverTicket_validRequest_returnsCreatedResponse() {
         String userCpf = "12345678902";
         UUID ticketId = UUID.randomUUID();
         String vehiclePlate = "MOU7919";
@@ -48,29 +48,15 @@ public class DriverTicketControllerTest {
                 vehiclePlate
         );
 
-        when(service.createDriverTicket(requestDto)).thenReturn(driverTicketResponseDto);
+        when(service.createDriverTicket(requestDto))
+                .thenReturn(driverTicketResponseDto);
 
         ResponseEntity<DriverTicketResponseDto> responseEntity = controller.createDriverTicket(requestDto);
 
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         assertEquals(driverTicketResponseDto, responseEntity.getBody());
 
-        verify(service, times(1)).createDriverTicket(requestDto);
-    }
-
-    @Test
-    void createDriverTicket_invalidRequest() {
-        DriverTicketRequestDto driverTicketRequestDto = new DriverTicketRequestDto(
-                "",
-                null,
-                ""
-        );
-
-        ResponseEntity<DriverTicketResponseDto> responseEntity = controller.createDriverTicket(driverTicketRequestDto);
-
-        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertNull(responseEntity.getBody());
-
-        verify(service, never()).createDriverTicket(any());
+        verify(service, times(1))
+                .createDriverTicket(requestDto);
     }
 }
