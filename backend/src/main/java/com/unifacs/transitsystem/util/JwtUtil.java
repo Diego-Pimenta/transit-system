@@ -43,6 +43,7 @@ public class JwtUtil {
         return SecurityConstants.EXPIRATION_TIME;
     }
 
+    @SuppressWarnings("deprecation")
     public String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
         return Jwts
                 .builder()
@@ -67,6 +68,7 @@ public class JwtUtil {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    @SuppressWarnings("deprecation")
     public Claims extractAllClaims(String token) {
         return Jwts
                 .parser()

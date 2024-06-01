@@ -4,7 +4,6 @@ import com.unifacs.transitsystem.exception.ResourceNotFoundException;
 import com.unifacs.transitsystem.model.dto.request.CreateVehicleRequestDto;
 import com.unifacs.transitsystem.model.dto.request.UpdateVehicleRequestDto;
 import com.unifacs.transitsystem.model.dto.response.VehicleResponseDto;
-import com.unifacs.transitsystem.repository.DriverTicketRepository;
 import com.unifacs.transitsystem.repository.VehicleRepository;
 import com.unifacs.transitsystem.service.VehicleService;
 import com.unifacs.transitsystem.service.mapper.VehicleMapper;
