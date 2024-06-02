@@ -13,6 +13,7 @@
     "@popperjs/core": "^2.11.8",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "moment": "^2.30.1",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",

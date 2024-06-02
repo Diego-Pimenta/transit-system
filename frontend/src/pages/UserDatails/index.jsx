@@ -13,6 +13,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
+import ModalTicketCreate from "../../components/ModalTicketCreate/modalTicketCreate";
+import ModalCaution from "../../components/ModalCaution/modalCaution";
 
 const formValidation = yup.object().shape({
   name: yup.string().required("Campo obrigatório"),
@@ -37,6 +39,13 @@ const UserDetails = () => {
   const { id } = useParams();
   const [userData, setUserData] = useState("");
   const [ticketsData, setTicketsData] = useState([]);
+  const [cpf, setCpf] = useState("");
+  const [show, setShow] = useState(false);
+  const [showCaution, setShowCaution] = useState(false);
+  const [makeRequest, setMakeRequest] = useState(false);
+
+  const handleShow = () => setShow(true);
+  const handleShowCaution = () => setShowCaution(true);
 
   useEffect(() => {
     const getUser = async () => {
@@ -63,7 +72,7 @@ const UserDetails = () => {
   useEffect(() => {
     if (userData) {
       setValue("name", userData.name);
-      setValue("cpf", userData.cpf);
+      setValue("cpf", formatarCPF(userData?.cpf));
       setValue("email", userData.email);
       setValue("address", userData.address);
       setValue("phone_number", userData.phone_number);
@@ -94,14 +103,43 @@ const UserDetails = () => {
     }
   }, [userData]);
 
+  function formatarCPF(cpf) {
+    cpf = cpf?.replace(/\D/g, "");
+    cpf = cpf?.replace(/(\d{3})(\d)/, "$1.$2");
+    cpf = cpf?.replace(/(\d{3})(\d)/, "$1.$2");
+    cpf = cpf?.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    return cpf;
+  }
+  const removeSpecialChars = (str) => str.replace(/[.-]/g, "");
+
+  const handleInputChange = (event) => {
+    let inputValue = event.target.value.replace(/\D/g, "");
+
+    const formattedValue = inputValue
+      .split("")
+      .map((char, index) => {
+        if (index === 3 || index === 6) {
+          return "." + char;
+        } else if (index === 9) {
+          return "-" + char;
+        }
+        return char;
+      })
+      .join("");
+
+    setValue("cpf", formattedValue);
+  };
+
   const editUser = async () => {
     try {
+      const cpf = removeSpecialChars(watch("cpf"));
+
       const resp = await axios.put(
         `http://localhost:8081/api/users/${id}`,
         {
           name: watch("name"),
           email: watch("email"),
-          cpf: watch("cpf"),
+          cpf: cpf,
           address: watch("address"),
           phone_number: watch("phone_number"),
         },
@@ -114,6 +152,7 @@ const UserDetails = () => {
 
       if (resp.status === 200) {
         toast.success("Usuário editado com sucesso!");
+        window.location.reload();
       } else {
         toast.error("Resposta inesperada do servidor, contate o suporte!");
       }
@@ -122,24 +161,33 @@ const UserDetails = () => {
     }
   };
 
-  const removeUser = async () => {
-    try {
-      const resp = await axios.delete(`http://localhost:8081/api/users/${id}`, {
-        headers: {
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      });
+  useEffect(() => {
+    if (makeRequest === true) {
+      const removeUser = async () => {
+        try {
+          const resp = await axios.delete(
+            `http://localhost:8081/api/users/${id}`,
+            {
+              headers: {
+                Authorization: `${localStorage.getItem("token")}`,
+              },
+            }
+          );
 
-      if (resp.status === 204) {
-        toast.success("Usuário excluído com sucesso!");
-        navigate("/users");
-      } else {
-        toast.error("Resposta inesperada do servidor, contate o suporte!");
-      }
-    } catch (error) {
-      toast.error("Resposta inesperada do servidor, contate o suporte!");
+          if (resp.status === 204) {
+            toast.success("Usuário excluído com sucesso!");
+            navigate("/users");
+          } else {
+            toast.error("Resposta inesperada do servidor, contate o suporte!");
+          }
+        } catch (error) {
+          toast.error("Resposta inesperada do servidor, contate o suporte!");
+        }
+      };
+      removeUser();
+      setMakeRequest(false);
     }
-  };
+  }, [makeRequest]);
 
   return (
     <div
@@ -151,8 +199,23 @@ const UserDetails = () => {
       }}
     >
       <ToastContainer />
+      <ModalCaution
+        show={showCaution}
+        setShow={setShowCaution}
+        makeRequest={makeRequest}
+        setMakeRequest={setMakeRequest}
+        title={"Tem certeza que deseja excluir este usuário?"}
+      />
+      <ModalTicketCreate show={show} setShow={setShow} />
       <div className={styles.titleContainer}>
         <h1>{userData?.name}</h1>
+        <Button
+          variant="primary"
+          onClick={handleShow}
+          style={{ marginRight: "50px" }}
+        >
+          Aplicar infração
+        </Button>
       </div>
       <div className={styles.userDataContainer}>
         <h1>Dados do usuário:</h1>
@@ -165,6 +228,7 @@ const UserDetails = () => {
             <Form.Control
               type="text"
               placeholder="Nome"
+              disabled
               value={watch("name")}
               {...register("name")}
             />
@@ -190,9 +254,12 @@ const UserDetails = () => {
           >
             <Form.Control
               type="text"
+              maxLength={14}
+              disabled
               placeholder="xxx.xxx.xxx-xx"
               value={watch("cpf")}
               {...register("cpf")}
+              onChange={handleInputChange}
             />
           </FloatingLabel>
         </div>
@@ -232,7 +299,7 @@ const UserDetails = () => {
           </FloatingLabel>
         </div>
         <div className={styles.FormRowBtn}>
-          <Button variant="danger" onClick={() => handleSubmit(removeUser())}>
+          <Button variant="danger" onClick={handleShowCaution}>
             Excluir usuário
           </Button>
           <Button variant="primary" onClick={() => handleSubmit(editUser())}>

@@ -9,6 +9,8 @@ import axios from "axios";
 const Topbar = (props) => {
   const [perfilVisivel, setPerfilVisivel] = useState(false);
   const [cpf, setCpf] = useState("");
+  const [role, setRole] = useState("");
+  const [userId, setUserId] = useState("");
   const navigate = useNavigate();
 
   const togglePerfil = () => {
@@ -29,6 +31,7 @@ const Topbar = (props) => {
 
       if (resp.status === 204) {
         localStorage.removeItem("token");
+        localStorage.removeItem("isAuthenticated");
         setPerfilVisivel(false);
         navigate("/");
       } else {
@@ -51,6 +54,40 @@ const Topbar = (props) => {
     setCpf(formatarCPF(props?.userData?.cpf));
   }, [props?.userData]);
 
+  useEffect(() => {
+    const id = localStorage.getItem("id");
+    const role = localStorage.getItem("role");
+    if (role || id) {
+      setRole(role);
+      setUserId(id);
+    }
+  }, []);
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const resp = await axios.get(
+          `http://localhost:8081/api/users/${localStorage.getItem("id")}`,
+          {
+            headers: {
+              Authorization: `${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        if (resp.status === 200) {
+          props.setUserData(resp.data);
+        } else {
+          toast.error("Resposta inesperada do servidor, contate o suporte!");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getUser();
+  }, []);
+
   return (
     <div className={styles.topbar}>
       <img src={logoDetran} alt="logo" height={80} className={styles.image} />
@@ -58,21 +95,18 @@ const Topbar = (props) => {
         <ul className={styles.nav}>
           <li className={styles.li}>
             <Link className={styles.a} to={"/home"}>
-              {props?.userData?.role === "USER" ? "Home" : "Infrações"}
+              {(props?.userData?.role || role) === "USER"
+                ? "Home"
+                : "Infrações"}
             </Link>
           </li>
-          {props?.userData?.role === "WORKER" && (
+          {(props?.userData?.role || role) === "WORKER" && (
             <li>
               <Link className={styles.a} to={"/users"}>
                 Usuários
               </Link>
             </li>
           )}
-          <li>
-            <Link className={styles.a} to={"/about"}>
-              Sobre
-            </Link>
-          </li>
           <li>
             <Link className={styles.a} to={"/contact"}>
               Contato

@@ -38,41 +38,52 @@ const Users = () => {
     navigate(`/users/${id}`);
   };
 
+  function formatarCPF(cpf) {
+    cpf = cpf?.replace(/\D/g, "");
+    cpf = cpf?.replace(/(\d{3})(\d)/, "$1.$2");
+    cpf = cpf?.replace(/(\d{3})(\d)/, "$1.$2");
+    cpf = cpf?.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    return cpf;
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.titleContainer}>
         <h1>
           <FaUsers size={50} /> Usuários
         </h1>
-        <Form className="d-flex" style={{ marginRight: "50px" }}>
+        {/* <Form className="d-flex" style={{ marginRight: "50px" }}>
           <Form.Control
             type="search"
             placeholder="Pesquisar usuários..."
             className="me-2"
             aria-label="Search"
           />
-        </Form>
+        </Form> */}
       </div>
       <div className={styles.containerUser}>
-        {userData?.map((value, index) => (
-          <div
-            key={index}
-            className={styles.cardUser}
-            onClick={() => redirect(value.id)}
-          >
-            <div className={styles.imgUser}>
-              <FaUser size={100} />
-            </div>
-            <div className={styles.descUser}>
-              <p>
-                <span>Nome:</span> {value.name}
-              </p>
-              <p>
-                <span>CPF:</span> {value.cpf}
-              </p>
-            </div>
-          </div>
-        ))}
+        {userData?.map(
+          (value, index) =>
+            value.role !== "WORKER" && (
+              <div
+                key={index}
+                className={styles.cardUser}
+                onClick={() => redirect(value.id)}
+              >
+                <div className={styles.imgUser}>
+                  <FaUser size={100} />
+                </div>
+                <div className={styles.descUser}>
+                  <p>
+                    <span>Nome:</span> {value.name}
+                  </p>
+                  <p>
+                    <span>CPF:</span> {formatarCPF(value.cpf)}
+                  </p>
+                </div>
+              </div>
+            )
+        )}
       </div>
     </div>
   );
