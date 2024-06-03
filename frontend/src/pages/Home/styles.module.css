@@ -23,7 +23,11 @@
 
 .ticketsContainer {
     width: 90%;
-    margin-top: 20px;
+    margin-bottom: 20px;
+
+    h3 {
+        margin-top: 30px;
+    }
 }
 
 .contaierNewTicket {
@@ -33,4 +37,5 @@
     justify-content: end;
     align-items: center;
     margin-right: 120px;
+    gap: 20px;
 }

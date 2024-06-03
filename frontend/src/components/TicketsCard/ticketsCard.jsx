@@ -1,19 +1,25 @@
 import Button from "react-bootstrap/Button";
 import Accordion from "react-bootstrap/Accordion";
 import styles from "./ticketsCard.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalTicketPayment from "../ModalTicketPayment/modalTicketPayment";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import ModalTicketEdit from "../ModalTicketEdit/modalTicketEdit";
+import ModalCaution from "../ModalCaution/modalCaution";
 
 const TicketsCard = (props) => {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [showCaution, setShowCaution] = useState(false);
+  const [makeRequest, setMakeRequest] = useState(false);
 
   const handleShow = () => setShow(true);
+  const handleShowCaution = () => setShowCaution(true);
+  const handleShowEdit = () => setShowEdit(true);
 
   const deleteTicket = async () => {
     try {
@@ -28,6 +34,7 @@ const TicketsCard = (props) => {
 
       if (resp.status === 204) {
         toast.success("Infração excluída com sucesso!");
+        window.location.reload();
       } else {
         toast.error("Resposta inesperada do servidor, contate o suporte!");
       }
@@ -36,12 +43,53 @@ const TicketsCard = (props) => {
     }
   };
 
+  useEffect(() => {
+    if (makeRequest === true) {
+      const deleteCategoryTicket = async () => {
+        try {
+          const resp = await axios.delete(
+            `http://localhost:8081/api/tickets/${props.ticketsData?.id}`,
+            {
+              headers: {
+                Authorization: `${localStorage.getItem("token")}`,
+              },
+            }
+          );
+
+          if (resp.status === 204) {
+            toast.success("Infração excluída com sucesso!");
+            window.location.reload();
+          } else {
+            toast.error("Resposta inesperada do servidor, contate o suporte!");
+          }
+        } catch (error) {
+          toast.error("Resposta inesperada do servidor, contate o suporte!");
+        }
+      };
+      deleteCategoryTicket();
+      setMakeRequest(false);
+    }
+  }, [makeRequest]);
+
   return (
     <>
+      <ModalCaution
+        show={showCaution}
+        setShow={setShowCaution}
+        makeRequest={makeRequest}
+        setMakeRequest={setMakeRequest}
+        title={"Tem certeza que deseja excluír esta categoria de infração?"}
+      />
       <ModalTicketPayment
         show={show}
         setShow={setShow}
         title={props.ticketsData?.category}
+      />
+      <ModalTicketEdit
+        show={showEdit}
+        setShow={setShowEdit}
+        title={props.ticketsData?.category}
+        ticketsData={props.ticketsData}
       />
       <ToastContainer />
 
@@ -108,7 +156,15 @@ const TicketsCard = (props) => {
                     </div>
                   ) : (
                     <div className={styles.ticketsBtn}>
-                      <Button variant="primary">Editar infração</Button>
+                      <Button
+                        variant="primary"
+                        onClick={() => handleShowEdit()}
+                      >
+                        Editar infração
+                      </Button>
+                      <Button variant="danger" onClick={handleShowCaution}>
+                        Excluir infração
+                      </Button>
                     </div>
                   )}
                 </div>

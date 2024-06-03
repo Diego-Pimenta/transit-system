@@ -22,10 +22,22 @@
     color: white;
     gap: 40px;
 
+    @media (max-width: 670px) {
+        font-size: 25px;
+        gap: 20px;
+    }
+
+    @media (max-width: 545px) {
+        font-size: 20px;
+        gap: 20px;
+    }
+
     li:hover {
         text-decoration: underline;
         cursor: pointer;
     }
+
+
 }
 
 .navigation {

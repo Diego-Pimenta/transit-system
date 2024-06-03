@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Button from "react-bootstrap/Button";
@@ -32,6 +32,12 @@ const Login = (props) => {
   const navigate = useNavigate();
 
   const [recaptchaFilled, setRecaptchaFilled] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+
+  const handleClick = () => {
+    setLoading(true);
+    Login();
+  };
 
   const handleInputChange = (event) => {
     let inputValue = event.target.value.replace(/\D/g, "");
@@ -64,8 +70,13 @@ const Login = (props) => {
 
       if (resp.status === 200) {
         localStorage.setItem("token", `Bearer ${resp.data.token}`);
-        navigate("/home");
+        localStorage.setItem("isAuthenticated", true);
+        localStorage.setItem("id", resp.data.user.id);
+        localStorage.setItem("role", resp.data.user.role);
         props.setUserData(resp.data.user);
+        setTimeout(() => {
+          navigate("/home");
+        }, 2000);
       } else {
         toast.error("Resposta inesperada do servidor, contate o suporte!");
       }
@@ -129,9 +140,10 @@ const Login = (props) => {
             <Button
               variant="primary"
               style={{ width: "50%" }}
-              onClick={handleSubmit(Login)}
+              disabled={isLoading}
+              onClick={!isLoading ? handleClick : null}
             >
-              Entrar
+              {isLoading ? "Carregando..." : "Entrar"}
             </Button>
             <Link to="/register" style={{ width: "50%" }}>
               <Button variant="primary" style={{ width: "100%" }}>

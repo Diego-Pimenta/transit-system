@@ -19,7 +19,7 @@ const formValidation = yup.object().shape({
   emission_date: yup.string().required("Campo obrigatório"),
 });
 
-const ModalTicketEdit = (props) => {
+const ModalTicketCreateCategory = (props) => {
   const {
     register,
     handleSubmit,
@@ -29,22 +29,6 @@ const ModalTicketEdit = (props) => {
   } = useForm({
     resolver: yupResolver(formValidation),
   });
-
-  useEffect(() => {
-    if (props.ticketsData) {
-      setValue("category", props.ticketsData?.category);
-      setValue("description", props.ticketsData?.description);
-      setValue("cost", props.ticketsData?.cost);
-      const fullDateTime = props.ticketsData?.emission_date;
-      let isoDate = "";
-
-      if (fullDateTime) {
-        const datePart = fullDateTime.split(" ")[0];
-        isoDate = convertDateToISO(datePart);
-        setValue("emission_date", isoDate);
-      }
-    }
-  }, [props.ticketsData]);
 
   const handleClose = () => {
     props.setShow(false);
@@ -58,8 +42,8 @@ const ModalTicketEdit = (props) => {
       )} ${currentTime}`;
 
       console.log(formattedDate);
-      const resp = await axios.put(
-        `http://localhost:8081/api/tickets/${props.ticketsData?.id}`,
+      const resp = await axios.post(
+        `http://localhost:8081/api/tickets`,
         {
           category: watch("category"),
           description: watch("description"),
@@ -73,9 +57,10 @@ const ModalTicketEdit = (props) => {
         }
       );
 
-      if (resp.status === 200) {
-        toast.success("Infração editada com sucesso!");
+      if (resp.status === 201) {
+        toast.success("Infração criada com sucesso!");
         props.setShow(false);
+        window.location.reload();
       } else {
         toast.error("Resposta inesperada do servidor, contate o suporte!");
       }
@@ -98,14 +83,14 @@ const ModalTicketEdit = (props) => {
     <Modal show={props.show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>
-          <FiAlertOctagon /> {props.ticketsData.category}
+          <FiAlertOctagon /> Nova categoria
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
           <FloatingLabel
             controlId="floatingInput"
-            label="Categoria"
+            label="Nome da categoria"
             className="mb-3"
             style={{ marginTop: "20px" }}
             error={errors.category}
@@ -113,7 +98,6 @@ const ModalTicketEdit = (props) => {
             <Form.Control
               type="text"
               placeholder="Categoria"
-              value={watch("category")}
               {...register("category")}
             />
             {errors.category && <span>{errors.category.message}</span>}
@@ -128,7 +112,6 @@ const ModalTicketEdit = (props) => {
             <Form.Control
               type="text"
               placeholder="Descrição"
-              value={watch("description")}
               {...register("description")}
             />
             {errors.description && <span>{errors.description.message}</span>}
@@ -143,7 +126,6 @@ const ModalTicketEdit = (props) => {
             <Form.Control
               type="text"
               placeholder="Preço"
-              value={watch("cost")}
               {...register("cost")}
             />
             {errors.cost && <span>{errors.cost.message}</span>}
@@ -157,9 +139,8 @@ const ModalTicketEdit = (props) => {
           >
             <input
               type="date"
-              class="form-control"
+              className="form-control"
               placeholder="Data de emissão"
-              value={watch("emission_date")}
               {...register("emission_date")}
             />
             {errors.emission_date && (
@@ -173,11 +154,11 @@ const ModalTicketEdit = (props) => {
           Fechar
         </Button>
         <Button variant="primary" onClick={handleSubmit(editTicket)}>
-          Editar
+          Criar
         </Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
-export default ModalTicketEdit;
+export default ModalTicketCreateCategory;

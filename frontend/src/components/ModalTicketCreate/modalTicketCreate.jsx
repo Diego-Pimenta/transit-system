@@ -29,6 +29,7 @@ const ModalTicketCreate = (props) => {
     resolver: yupResolver(formValidation),
   });
   const [ticketsData, setTicketsData] = useState("");
+  
   const handleClose = () => {
     props.setShow(false);
     setValue("userCpf", "");
