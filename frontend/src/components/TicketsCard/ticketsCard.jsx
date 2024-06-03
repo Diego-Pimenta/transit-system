@@ -99,9 +99,9 @@ const TicketsCard = (props) => {
             <Accordion.Header>
               <div className={styles.ticketsTitle}>
                 <>
-                  <span>Categoria: {props.ticketsData?.category}</span>
+                  <span>Categoria: {props.ticketsData?.ticket?.category}</span>
                   <span>
-                    Preço: R$ {props.ticketsData?.cost}
+                    Preço: R$ {props.ticketsData?.ticket?.cost}
                     ,00
                   </span>
                 </>
@@ -110,12 +110,20 @@ const TicketsCard = (props) => {
             <Accordion.Body>
               <div className={styles.ticketsBody}>
                 <div className={styles.ticketsData}>
-                  <span> Descrição: {props.ticketsData?.description}</span>
+                  <span>
+                    Descrição: {props.ticketsData?.ticket?.description}
+                  </span>
                   <span> Nome: {props.userData?.name || ""}</span>
                   <span> CPF: {props.userData?.cpf || ""}</span>
                   <span> Endereço: {props.userData?.address || ""}</span>
                   <span> Email: {props.userData?.email || ""}</span>
                   <span> Celular: {props.userData?.phone_number || ""}</span>
+                  <span>
+                    Data de emissão: {props.ticketsData?.emission_date}
+                  </span>
+                  <span>
+                    Data de expiração: {props.ticketsData?.expiration_date}
+                  </span>
                 </div>
                 <div className={styles.ticketsBtn}>
                   <Button
@@ -135,9 +143,17 @@ const TicketsCard = (props) => {
               <Accordion.Header>
                 <div className={styles.ticketsTitle}>
                   <>
-                    <span>Categoria: {props.ticketsData?.category}</span>
                     <span>
-                      Preço: R$ {props.ticketsData?.cost}
+                      Categoria:{" "}
+                      {props?.userData
+                        ? props.ticketsData?.ticket?.category
+                        : props.ticketsData?.category}
+                    </span>
+                    <span>
+                      Preço: R${" "}
+                      {props?.userData
+                        ? props.ticketsData?.ticket?.cost
+                        : props.ticketsData?.cost}
                       ,00
                     </span>
                   </>
@@ -146,7 +162,23 @@ const TicketsCard = (props) => {
               <Accordion.Body>
                 <div className={styles.ticketsBody}>
                   <div className={styles.ticketsData}>
-                    <span> Descrição: {props.ticketsData?.description}</span>
+                    <span>
+                      Descrição:{" "}
+                      {props.userData
+                        ? props.ticketsData?.ticket?.description
+                        : props.ticketsData?.description}
+                    </span>
+                    {props.userData && (
+                      <>
+                        <span>
+                          Data de emissão: {props.ticketsData?.emission_date}
+                        </span>
+                        <span>
+                          Data de expiração:
+                          {props.ticketsData?.expiration_date}
+                        </span>
+                      </>
+                    )}
                   </div>
                   {props?.userData ? (
                     <div className={styles.ticketsBtn}>

@@ -52,19 +52,12 @@ const ModalTicketEdit = (props) => {
 
   const editTicket = async () => {
     try {
-      const currentTime = moment().format("HH:mm");
-      const formattedDate = `${convertDateToCustom(
-        watch("emission_date")
-      )} ${currentTime}`;
-
-      console.log(formattedDate);
       const resp = await axios.put(
         `http://localhost:8081/api/tickets/${props.ticketsData?.id}`,
         {
           category: watch("category"),
           description: watch("description"),
           cost: watch("cost"),
-         // emission_date: formattedDate,
         },
         {
           headers: {
@@ -76,6 +69,7 @@ const ModalTicketEdit = (props) => {
       if (resp.status === 200) {
         toast.success("Infração editada com sucesso!");
         props.setShow(false);
+        window.location.reload();
       } else {
         toast.error("Resposta inesperada do servidor, contate o suporte!");
       }
@@ -172,7 +166,7 @@ const ModalTicketEdit = (props) => {
         <Button variant="secondary" onClick={handleClose}>
           Fechar
         </Button>
-        <Button variant="primary" onClick={handleSubmit(editTicket)}>
+        <Button variant="primary" onClick={editTicket}>
           Editar
         </Button>
       </Modal.Footer>

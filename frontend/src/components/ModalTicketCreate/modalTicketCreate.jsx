@@ -11,6 +11,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
+import moment from "moment";
 
 const formValidation = yup.object().shape({
   userCpf: yup.string().required("Campo obrigatório"),
@@ -86,6 +87,10 @@ const ModalTicketCreate = (props) => {
 
   const TicketCreate = async () => {
     try {
+      const currentTime = moment().format("HH:mm");
+      const formattedDate = `${convertDateToCustom(
+        watch("emission_date")
+      )} ${currentTime}`;
       setValue("userCpf", removeSpecialChars(watch("userCpf")));
       const resp = await axios.post(
         "http://localhost:8081/api/driver-tickets",
@@ -93,6 +98,7 @@ const ModalTicketCreate = (props) => {
           user_cpf: watch("userCpf"),
           ticket_id: watch("ticket_id"),
           vehicle_plate: watch("vehiclePlate"),
+          emission_date: formattedDate,
         },
         {
           headers: {
@@ -110,6 +116,11 @@ const ModalTicketCreate = (props) => {
     } catch (error) {
       toast.error("Resposta inesperada do servidor, contate o suporte!");
     }
+  };
+
+  const convertDateToCustom = (dateString) => {
+    const [year, month, day] = dateString.split("-");
+    return `${day}/${month}/${year}`;
   };
 
   const handleInputChange = (event) => {
