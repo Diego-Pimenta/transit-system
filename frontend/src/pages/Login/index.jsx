@@ -75,13 +75,15 @@ const Login = (props) => {
         localStorage.setItem("role", resp.data.user.role);
         props.setUserData(resp.data.user);
         setTimeout(() => {
-          navigate("/home");
-        }, 2000);
+          window.location.href = "/home";
+        }, 3000);
       } else {
         toast.error("Resposta inesperada do servidor, contate o suporte!");
+        setLoading(false);
       }
     } catch (error) {
       toast.error("Cpf ou senha incorreta!");
+      setLoading(false);
     }
   };
 
