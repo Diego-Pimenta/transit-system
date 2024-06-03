@@ -71,6 +71,22 @@ const TicketsCard = (props) => {
     }
   }, [makeRequest]);
 
+  function formatPhoneNumber(phoneNumber) {
+    const cleaned = ("" + phoneNumber).replace(/\D/g, "");
+
+    if (cleaned.length !== 10) {
+      return phoneNumber;
+    }
+
+    const match = cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
+
+    if (match) {
+      return `(${match[1]})${match[2]}-${match[3]}`;
+    }
+
+    return phoneNumber;
+  }
+
   return (
     <>
       <ModalCaution
@@ -117,7 +133,10 @@ const TicketsCard = (props) => {
                   <span> CPF: {props.userData?.cpf || ""}</span>
                   <span> Endereço: {props.userData?.address || ""}</span>
                   <span> Email: {props.userData?.email || ""}</span>
-                  <span> Celular: {props.userData?.phone_number || ""}</span>
+                  <span>
+                    Celular:{" "}
+                    {formatPhoneNumber(props.userData?.phone_number) || ""}
+                  </span>
                   <span>
                     Data de emissão: {props.ticketsData?.emission_date}
                   </span>
