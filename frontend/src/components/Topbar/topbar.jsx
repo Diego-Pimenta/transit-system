@@ -33,7 +33,7 @@ const Topbar = (props) => {
         localStorage.removeItem("token");
         localStorage.removeItem("isAuthenticated");
         setPerfilVisivel(false);
-        navigate("/");
+        window.location.href = "/";
       } else {
         toast.error("Resposta inesperada do servidor, contate o suporte!");
       }

@@ -10,6 +10,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 const formValidation = yup.object().shape({
   name: yup.string().required("Campo obrigatório"),
@@ -34,6 +35,7 @@ const Register = () => {
   } = useForm({
     resolver: yupResolver(formValidation),
   });
+  const navigate = useNavigate();
 
   //const notify = () => toast.error("Todos os campos são obrigatórios!");
 
@@ -75,7 +77,7 @@ const Register = () => {
         navigate("/login");
       }
     } catch (error) {
-      toast.error("Resposta inesperada do servidor, contate o suporte!");
+      toast.error(error.response?.data?.message);
     }
   };
 

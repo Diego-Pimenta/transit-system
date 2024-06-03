@@ -48,7 +48,7 @@ const ModalTicketCreateCategory = (props) => {
           category: watch("category"),
           description: watch("description"),
           cost: watch("cost"),
-          emission_date: formattedDate,
+          //  emission_date: formattedDate,
         },
         {
           headers: {
@@ -130,7 +130,7 @@ const ModalTicketCreateCategory = (props) => {
             />
             {errors.cost && <span>{errors.cost.message}</span>}
           </FloatingLabel>
-          <FloatingLabel
+          {/* <FloatingLabel
             controlId="floatingInput"
             label="Data de emissão"
             className="mb-3"
@@ -146,7 +146,7 @@ const ModalTicketCreateCategory = (props) => {
             {errors.emission_date && (
               <span>{errors.emission_date.message}</span>
             )}
-          </FloatingLabel>
+          </FloatingLabel> */}
         </Form>
       </Modal.Body>
       <Modal.Footer>

@@ -9,19 +9,28 @@ import UserDetails from "../pages/UserDatails";
 import Contact from "../pages/Contact";
 
 const RouteApp = ({ setUserData, userData }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return !!localStorage.getItem("isAuthenticated");
-  });
-
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    localStorage.getItem("isAuthenticated") === "true"
+  );
   useEffect(() => {
     const authStatus = localStorage.getItem("isAuthenticated");
-    setIsAuthenticated(!!authStatus);
-    console.log(isAuthenticated);
+    if (authStatus === "true") {
+      setIsAuthenticated(authStatus);
+    }
   }, []);
 
   return (
     <Routes>
-      <Route path="/" element={<Login setUserData={setUserData} />} />
+      <Route
+        path="/"
+        element={
+          isAuthenticated ? (
+            <Home userData={userData} />
+          ) : (
+            <Login setUserData={setUserData} />
+          )
+        }
+      />
       <Route path="/register" element={<Register />} />
 
       <Route

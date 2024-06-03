@@ -16,6 +16,7 @@ const formValidation = yup.object().shape({
   userCpf: yup.string().required("Campo obrigatório"),
   ticket_id: yup.string().required("Campo obrigatório"),
   vehiclePlate: yup.string().required("Campo obrigatório"),
+  emission_date: yup.string().required("Campo obrigatório"),
 });
 
 const ModalTicketCreate = (props) => {
@@ -29,12 +30,14 @@ const ModalTicketCreate = (props) => {
     resolver: yupResolver(formValidation),
   });
   const [ticketsData, setTicketsData] = useState("");
-  
+  const [vehiclesData, setVehiclesData] = useState("");
+
   const handleClose = () => {
     props.setShow(false);
     setValue("userCpf", "");
     setValue("ticket_id", "");
     setValue("vehiclePlate", "");
+    setValue("emission_date", "");
   };
 
   useEffect(() => {
@@ -56,7 +59,26 @@ const ModalTicketCreate = (props) => {
           console.log(error);
         }
       };
+
+      const getVehicles = async () => {
+        try {
+          const resp = await axios.get("http://localhost:8081/api/vehicles", {
+            headers: {
+              Authorization: `${localStorage.getItem("token")}`,
+            },
+          });
+
+          if (resp.status === 200) {
+            setVehiclesData(resp.data);
+          } else {
+            toast.error("Resposta inesperada do servidor, contate o suporte!");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
       getTickets();
+      getVehicles();
     }
   }, [props.show]);
 
@@ -86,7 +108,7 @@ const ModalTicketCreate = (props) => {
         toast.error("Resposta inesperada do servidor, contate o suporte!");
       }
     } catch (error) {
-      toast.error("Cpf ou senha incorreta!");
+      toast.error("Resposta inesperada do servidor, contate o suporte!");
     }
   };
 
@@ -147,20 +169,40 @@ const ModalTicketCreate = (props) => {
               ))}
           </Form.Select>
 
+          <Form.Select
+            style={{ marginTop: "20px" }}
+            value={watch("vehiclePlate")}
+            {...register("vehiclePlate")}
+          >
+            <option hidden value="">
+              Selecione o carro
+            </option>
+            {Array.isArray(vehiclesData) &&
+              vehiclesData?.map((value) => (
+                <option key={value.id} value={value.plate}>
+                  Placa: {value.plate} Modelo:
+                  {value.model}
+                </option>
+              ))}
+          </Form.Select>
+
           <FloatingLabel
             controlId="floatingInput"
-            label="Placa do carro"
+            label="Data de emissão"
             className="mb-3"
             style={{ marginTop: "20px" }}
-            error={errors.vehiclePlate}
+            error={errors.emission_date}
           >
-            <Form.Control
-              type="text"
-              placeholder="Placa do carro"
-              value={watch("vehiclePlate")}
-              {...register("vehiclePlate")}
+            <input
+              type="date"
+              class="form-control"
+              placeholder="Data de emissão"
+              value={watch("emission_date")}
+              {...register("emission_date")}
             />
-            {errors.vehiclePlate && <span>{errors.vehiclePlate.message}</span>}
+            {errors.emission_date && (
+              <span>{errors.emission_date.message}</span>
+            )}
           </FloatingLabel>
         </div>
       </Modal.Body>
