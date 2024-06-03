@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,6 +37,7 @@ public class DriverTicketControllerTest {
         String vehiclePlate = "MOU7919";
 
         DriverTicketRequestDto requestDto = new DriverTicketRequestDto(
+                LocalDateTime.now(),
                 userCpf,
                 ticketId,
                 vehiclePlate
@@ -43,6 +45,7 @@ public class DriverTicketControllerTest {
 
         DriverTicketResponseDto driverTicketResponseDto = new DriverTicketResponseDto(
                 UUID.randomUUID(),
+                LocalDateTime.now(),
                 userCpf,
                 ticketId,
                 vehiclePlate

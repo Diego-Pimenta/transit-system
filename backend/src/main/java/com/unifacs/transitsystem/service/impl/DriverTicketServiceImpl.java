@@ -1,9 +1,9 @@
 package com.unifacs.transitsystem.service.impl;
 
-import com.unifacs.transitsystem.exception.DuplicateDriverTicketException;
 import com.unifacs.transitsystem.exception.ResourceNotFoundException;
 import com.unifacs.transitsystem.model.dto.request.DriverTicketRequestDto;
 import com.unifacs.transitsystem.model.dto.response.DriverTicketResponseDto;
+import com.unifacs.transitsystem.model.entity.DriverTicket;
 import com.unifacs.transitsystem.model.entity.Ticket;
 import com.unifacs.transitsystem.model.entity.User;
 import com.unifacs.transitsystem.model.entity.Vehicle;
@@ -13,6 +13,8 @@ import com.unifacs.transitsystem.repository.UserRepository;
 import com.unifacs.transitsystem.repository.VehicleRepository;
 import com.unifacs.transitsystem.service.DriverTicketService;
 import com.unifacs.transitsystem.service.mapper.DriverTicketMapper;
+import com.unifacs.transitsystem.util.DateUtil;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,21 +34,21 @@ public class DriverTicketServiceImpl implements DriverTicketService {
 
     private final DriverTicketMapper mapper;
 
+    private final DateUtil dateUtil;
+
     @Override
     public DriverTicketResponseDto createDriverTicket(DriverTicketRequestDto createDriverTicketRequestDto) {
         var user = this.getUser(createDriverTicketRequestDto.userCpf());
         var ticket = this.getTicket(createDriverTicketRequestDto.ticketId());
         var vehicle = this.getVehicle(createDriverTicketRequestDto.vehiclePlate());
 
-        try {
-            var driverTicket = mapper.driverTicketRequestDtoToDriverTicket(createDriverTicketRequestDto, user, ticket, vehicle);
+        var driverTicket = mapper.driverTicketRequestDtoToDriverTicket(createDriverTicketRequestDto, user, ticket, vehicle);
 
-            var createdDriverTicket = driverTicketRepository.save(driverTicket);
+        formatDriverTicketDate(driverTicket);
 
-            return mapper.driverTicketToDriverTicketResponseDto(createdDriverTicket);
-        } catch (Exception ex) {
-            throw new DuplicateDriverTicketException("A driver ticket for this user and vehicle already exists");
-        }
+        var createdDriverTicket = driverTicketRepository.save(driverTicket);
+
+        return mapper.driverTicketToDriverTicketResponseDto(createdDriverTicket);
     }
 
     @Override
@@ -54,6 +56,10 @@ public class DriverTicketServiceImpl implements DriverTicketService {
         driverTicketRepository.findById(driverTicketId)
                 .orElseThrow(() -> new ResourceNotFoundException("Driver ticket not found"));
         driverTicketRepository.deleteById(driverTicketId);
+    }
+
+    private void formatDriverTicketDate(DriverTicket driverTicket) {
+        driverTicket.setEmissionDate(dateUtil.formatDate(driverTicket.getEmissionDate()));
     }
 
     private User getUser(String userCpf) {

@@ -1,0 +1,64 @@
+# Ignorar arquivos e diretórios comuns que não são necessários para a construção da imagem
+.git
+.gitignore
+.DS_Store
+*.log
+*.md
+*.sh
+*.swp
+*.idea
+*.vscode
+
+# Ignorar diretórios específicos de builds locais
+node_modules/
+dist/
+build/
+out/
+.cache/
+
+# Ignorar arquivos de configuração do npm/yarn que não são necessários
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+.pnpm-debug.log
+
+# Ignorar configurações de IDE e editores
+.editorconfig
+.project
+.classpath
+
+# Ignorar outras configurações locais e temporárias
+.env
+*.env
+*.local
+*.env.local
+*.env.*.local
+*.bak
+*.tmp
+*.swp
+.tmp/
+
+# Ignorar diretórios específicos de sistemas operacionais
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Ignorar arquivos binários e de backup
+*.bak
+*.old
+*.orig
+*.rej
+*.so
+*.out
+*.a
+*.o
+*.pyc
+*.pyo
+*.pyd
+*.class
+*.exe
+*.dll
+
+# Ignorar arquivos de build do frontend
+.vite/

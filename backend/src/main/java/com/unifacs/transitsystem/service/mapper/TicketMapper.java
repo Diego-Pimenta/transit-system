@@ -28,10 +28,6 @@ public interface TicketMapper {
             @Mapping(
                     target = "cost",
                     expression = "java(!Objects.isNull(updateTicketRequestDto.cost()) ? updateTicketRequestDto.cost() : ticket.getCost())"
-            ),
-            @Mapping(
-                    target = "emissionDate",
-                    expression = "java(updateTicketRequestDto.emissionDate() != null ? updateTicketRequestDto.emissionDate() : ticket.getEmissionDate())"
             )
     })
     Ticket updateTicketRequestDtoToTicket(Ticket ticket, UpdateTicketRequestDto updateTicketRequestDto);

@@ -17,7 +17,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -72,8 +71,7 @@ public class SearchResultServiceImplTest {
                 UUID.randomUUID(),
                 "Speeding",
                 "Exceeded speed limit by 20 mph",
-                new BigDecimal(150.00),
-                LocalDateTime.now()
+                new BigDecimal(150.00)
         );
 
         when(driverTicketRepository.findAll())

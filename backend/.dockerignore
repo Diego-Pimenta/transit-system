@@ -1,0 +1,63 @@
+# Ignorar arquivos e diretórios comuns que não são necessários para a construção da imagem
+.git
+.gitignore
+.DS_Store
+*.iml
+*.log
+*.md
+*.sh
+*.swp
+*.idea
+*.vscode
+
+# Ignorar diretórios específicos de builds locais
+target/
+build/
+
+# Ignorar arquivos de configuração do Maven que não são necessários
+mvnw
+mvnw.cmd
+
+# Ignorar configurações de IDE e editores
+.editorconfig
+.project
+.classpath
+
+# Ignorar outras configurações locais e temporárias
+.env
+*.env
+*.properties
+*.yml
+*.yaml
+*.bak
+*.tmp
+*.swp
+.tmp/
+
+# Ignorar diretórios específicos de sistemas operacionais
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Ignorar arquivos de cache
+.cache
+node_modules/
+npm-debug.log
+
+# Ignorar arquivos binários e de backup
+*.bak
+*.old
+*.orig
+*.rej
+*.so
+*.out
+*.a
+*.o
+*.pyc
+*.pyo
+*.pyd
+*.class
+*.jar
+*.war
+*.ear

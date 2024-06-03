@@ -1,0 +1,14 @@
+.git
+.gitignore
+
+.github/
+.husky/
+
+documentation/
+node_modules/
+
+commitlint.config.js
+
+package*.json
+
+README.md

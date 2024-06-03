@@ -4,11 +4,9 @@ import com.unifacs.transitsystem.exception.ResourceNotFoundException;
 import com.unifacs.transitsystem.model.dto.request.CreateTicketRequestDto;
 import com.unifacs.transitsystem.model.dto.request.UpdateTicketRequestDto;
 import com.unifacs.transitsystem.model.dto.response.TicketResponseDto;
-import com.unifacs.transitsystem.model.entity.Ticket;
 import com.unifacs.transitsystem.repository.TicketRepository;
 import com.unifacs.transitsystem.service.TicketService;
 import com.unifacs.transitsystem.service.mapper.TicketMapper;
-import com.unifacs.transitsystem.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +21,9 @@ public class TicketServiceImpl implements TicketService {
 
     private final TicketMapper mapper;
 
-    private final DateUtil dateUtil;
-
     @Override
     public TicketResponseDto createTicket(CreateTicketRequestDto createTicketRequestDto) {
         var ticket = mapper.createTicketRequestDtoToTicket(createTicketRequestDto);
-
-        formatTicketDate(ticket);
 
         var createdTicket = repository.save(ticket);
 
@@ -61,8 +55,6 @@ public class TicketServiceImpl implements TicketService {
 
         var updatedTicket = mapper.updateTicketRequestDtoToTicket(ticket, updateTicketRequestDto);
 
-        formatTicketDate(updatedTicket);
-
         updatedTicket = repository.save(updatedTicket);
 
         return mapper.ticketToTicketResponseDto(updatedTicket);
@@ -73,9 +65,5 @@ public class TicketServiceImpl implements TicketService {
         repository.findById(ticketId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
         repository.deleteById(ticketId);
-    }
-
-    private void formatTicketDate(Ticket ticket) {
-        ticket.setEmissionDate(dateUtil.formatDate(ticket.getEmissionDate()));
     }
 }
