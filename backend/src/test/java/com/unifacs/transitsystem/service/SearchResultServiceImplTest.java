@@ -2,9 +2,11 @@ package com.unifacs.transitsystem.service;
 
 import com.unifacs.transitsystem.exception.ResourceNotFoundException;
 import com.unifacs.transitsystem.model.dto.response.AllVehicleTicketsResponse;
+import com.unifacs.transitsystem.model.dto.response.SearchResultResponse;
 import com.unifacs.transitsystem.model.dto.response.TicketResponseDto;
 import com.unifacs.transitsystem.model.dto.response.VehicleResponseDto;
 import com.unifacs.transitsystem.model.entity.DriverTicket;
+import com.unifacs.transitsystem.model.entity.Ticket;
 import com.unifacs.transitsystem.model.entity.Vehicle;
 import com.unifacs.transitsystem.repository.DriverTicketRepository;
 import com.unifacs.transitsystem.service.impl.SearchResultServiceImpl;
@@ -17,6 +19,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -53,9 +57,13 @@ public class SearchResultServiceImplTest {
         Vehicle vehicle = new Vehicle();
         vehicle.setPlate(vehiclePlate);
 
+        LocalDateTime emissionDate = LocalDateTime.now();
+
         DriverTicket driverTicket = new DriverTicket();
         driverTicket.setVehicle(vehicle);
         driverTicket.setId(driverTicketId);
+        driverTicket.setEmissionDate(emissionDate);
+        driverTicket.setTicket(new Ticket());
 
         List<DriverTicket> driverTickets = Collections.singletonList(driverTicket);
 
@@ -74,6 +82,14 @@ public class SearchResultServiceImplTest {
                 new BigDecimal(150.00)
         );
 
+        LocalDateTime expirationDate = emissionDate.plusMonths(3).with(LocalTime.MIDNIGHT);
+
+        SearchResultResponse searchResultResponse = new SearchResultResponse(
+                emissionDate,
+                expirationDate,
+                ticketResponseDto
+        );
+
         when(driverTicketRepository.findAll())
                 .thenReturn(driverTickets);
         when(vehicleMapper.vehicleToVehicleResponseDto(vehicle))
@@ -84,9 +100,9 @@ public class SearchResultServiceImplTest {
         AllVehicleTicketsResponse allVehicleTicketsResponse = service.getAllDriverTicketsByVehicle(vehiclePlate);
 
         assertEquals(vehicleResponseDto, allVehicleTicketsResponse.vehicle());
-        assertEquals(Map.of(driverTicketId, ticketResponseDto), allVehicleTicketsResponse.driverTickets());
+        assertEquals(Map.of(driverTicketId, searchResultResponse), allVehicleTicketsResponse.driverTickets());
 
-        verify(driverTicketRepository, times(2))
+        verify(driverTicketRepository, times(1))
                 .findAll();
         verify(vehicleMapper, times(1))
                 .vehicleToVehicleResponseDto(vehicle);

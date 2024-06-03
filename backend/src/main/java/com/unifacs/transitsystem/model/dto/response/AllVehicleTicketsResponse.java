@@ -8,5 +8,5 @@ import java.util.UUID;
 public record AllVehicleTicketsResponse(
         VehicleResponseDto vehicle,
         @JsonProperty("driver_tickets")
-        Map<UUID, TicketResponseDto> driverTickets
+        Map<UUID, SearchResultResponse> driverTickets
 ) {}
