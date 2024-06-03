@@ -3,7 +3,6 @@ import styles from "./styles.module.css";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Button from "react-bootstrap/Button";
-// import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as yup from "yup";
@@ -22,7 +21,7 @@ const formValidation = yup.object().shape({
     .min(8, "Mínimo de 8 caracteres!")
     .max(20, "Máximo de 20 caracteres!")
     .required("Campo obrigatório"),
-  email: yup.string().required("Campo obrigatório"),
+  email: yup.string().required("Campo obrigatório").email("Email inválido"),
 });
 
 const Register = () => {
@@ -102,7 +101,9 @@ const Register = () => {
                 value={watch("name")}
                 {...register("name")}
               />
-              {errors.name && <span>{errors.name.message}</span>}
+              {errors.name && (
+                <span className={styles.error}>{errors.name.message}</span>
+              )}
             </FloatingLabel>
             <FloatingLabel
               controlId="floatingInput"

@@ -175,7 +175,7 @@ const ModalTicketCreate = (props) => {
               ticketsData?.map((value) => (
                 <option key={value.id} value={value.id}>
                   Categoria: {value.category} Preço: R$
-                  {value.cost},00
+                  {value.cost.toFixed(2)}
                 </option>
               ))}
           </Form.Select>

@@ -15,8 +15,13 @@ import moment from "moment";
 const formValidation = yup.object().shape({
   category: yup.string().required("Campo obrigatório"),
   description: yup.string().required("Campo obrigatório"),
-  cost: yup.string().required("Campo obrigatório"),
-  emission_date: yup.string().required("Campo obrigatório"),
+  cost: yup
+    .number()
+    .transform((value, originalValue) => {
+      return originalValue === "" ? null : value;
+    })
+    .typeError('Apenas números e "." ')
+    .required("Campo obrigatório"),
 });
 
 const ModalTicketCreateCategory = (props) => {
@@ -36,19 +41,12 @@ const ModalTicketCreateCategory = (props) => {
 
   const editTicket = async () => {
     try {
-      const currentTime = moment().format("HH:mm");
-      const formattedDate = `${convertDateToCustom(
-        watch("emission_date")
-      )} ${currentTime}`;
-
-      console.log(formattedDate);
       const resp = await axios.post(
         `http://localhost:8081/api/tickets`,
         {
           category: watch("category"),
           description: watch("description"),
           cost: watch("cost"),
-          //  emission_date: formattedDate,
         },
         {
           headers: {
@@ -67,16 +65,6 @@ const ModalTicketCreateCategory = (props) => {
     } catch (error) {
       toast.error("Resposta inesperada do servidor, contate o suporte!");
     }
-  };
-
-  const convertDateToISO = (dateString) => {
-    const [day, month, year] = dateString.split("-");
-    return `${year}-${month}-${day}`;
-  };
-
-  const convertDateToCustom = (dateString) => {
-    const [year, month, day] = dateString.split("-");
-    return `${day}-${month}-${year}`;
   };
 
   return (
@@ -100,7 +88,9 @@ const ModalTicketCreateCategory = (props) => {
               placeholder="Categoria"
               {...register("category")}
             />
-            {errors.category && <span>{errors.category.message}</span>}
+            {errors.category && (
+              <span style={{ color: "red" }}>{errors.category.message}</span>
+            )}
           </FloatingLabel>
           <FloatingLabel
             controlId="floatingInput"
@@ -114,7 +104,9 @@ const ModalTicketCreateCategory = (props) => {
               placeholder="Descrição"
               {...register("description")}
             />
-            {errors.description && <span>{errors.description.message}</span>}
+            {errors.description && (
+              <span style={{ color: "red" }}>{errors.description.message}</span>
+            )}
           </FloatingLabel>
           <FloatingLabel
             controlId="floatingInput"
@@ -128,25 +120,10 @@ const ModalTicketCreateCategory = (props) => {
               placeholder="Preço"
               {...register("cost")}
             />
-            {errors.cost && <span>{errors.cost.message}</span>}
-          </FloatingLabel>
-          {/* <FloatingLabel
-            controlId="floatingInput"
-            label="Data de emissão"
-            className="mb-3"
-            style={{ marginTop: "20px" }}
-            error={errors.emission_date}
-          >
-            <input
-              type="date"
-              className="form-control"
-              placeholder="Data de emissão"
-              {...register("emission_date")}
-            />
-            {errors.emission_date && (
-              <span>{errors.emission_date.message}</span>
+            {errors.cost && (
+              <span style={{ color: "red" }}>{errors.cost.message}</span>
             )}
-          </FloatingLabel> */}
+          </FloatingLabel>
         </Form>
       </Modal.Body>
       <Modal.Footer>

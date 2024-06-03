@@ -117,8 +117,7 @@ const TicketsCard = (props) => {
                 <>
                   <span>Categoria: {props.ticketsData?.ticket?.category}</span>
                   <span>
-                    Preço: R$ {props.ticketsData?.ticket?.cost}
-                    ,00
+                    Preço: R${props.ticketsData?.ticket?.cost.toFixed(2)}
                   </span>
                 </>
               </div>
@@ -171,9 +170,8 @@ const TicketsCard = (props) => {
                     <span>
                       Preço: R${" "}
                       {props?.userData
-                        ? props.ticketsData?.ticket?.cost
-                        : props.ticketsData?.cost}
-                      ,00
+                        ? props.ticketsData?.ticket?.cost.toFixed(2)
+                        : props.ticketsData?.cost.toFixed(2)}
                     </span>
                   </>
                 </div>
