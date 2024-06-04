@@ -31,6 +31,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(errors);
     }
 
+    @ExceptionHandler({UserAlreadyExistsException.class, RequestHeaderMissingException.class})
+    public ResponseEntity<Map<String, String>> handleBadRequestException(Exception ex) {
+        return handleException(ex, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleResourceNotFoundException(ResourceNotFoundException ex) {
         return handleException(ex, HttpStatus.NOT_FOUND);

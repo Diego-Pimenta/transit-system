@@ -33,10 +33,12 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      # dockerfile: Dockerfile.dev
     image: diegopimenta/transit-system-frontend:latest
     container_name: frontend
     ports:
       - 3000:80
+      # - 5173:5173
     networks:
       - transit_system
     depends_on:
