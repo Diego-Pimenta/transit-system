@@ -11,13 +11,13 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
-import moment from "moment";
 
 const formValidation = yup.object().shape({
   userCpf: yup.string().required("Campo obrigatório"),
   ticket_id: yup.string().required("Campo obrigatório"),
   vehiclePlate: yup.string().required("Campo obrigatório"),
   emission_date: yup.string().required("Campo obrigatório"),
+  time: yup.string().required("Campo obrigatório"),
 });
 
 const ModalTicketCreate = (props) => {
@@ -87,10 +87,9 @@ const ModalTicketCreate = (props) => {
 
   const TicketCreate = async () => {
     try {
-      const currentTime = moment().format("HH:mm");
       const formattedDate = `${convertDateToCustom(
         watch("emission_date")
-      )} ${currentTime}`;
+      )} ${watch("time")}`;
       setValue("userCpf", removeSpecialChars(watch("userCpf")));
       const resp = await axios.post(
         "http://localhost:8081/api/driver-tickets",
@@ -214,6 +213,20 @@ const ModalTicketCreate = (props) => {
             {errors.emission_date && (
               <span>{errors.emission_date.message}</span>
             )}
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Hora da emissão"
+            className="mb-3"
+            style={{ marginTop: "20px" }}
+            error={errors.time}
+          >
+            <Form.Control
+              type="time"
+              placeholder="CPF"
+              value={watch("time")}
+              {...register("time")}
+            />
           </FloatingLabel>
         </div>
       </Modal.Body>

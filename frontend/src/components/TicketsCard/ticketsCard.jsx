@@ -99,7 +99,7 @@ const TicketsCard = (props) => {
       <ModalTicketPayment
         show={show}
         setShow={setShow}
-        title={props.ticketsData?.category}
+        title={props.ticketsData?.ticket?.category}
       />
       <ModalTicketEdit
         show={showEdit}
@@ -127,14 +127,6 @@ const TicketsCard = (props) => {
                 <div className={styles.ticketsData}>
                   <span>
                     Descrição: {props.ticketsData?.ticket?.description}
-                  </span>
-                  <span> Nome: {props.userData?.name || ""}</span>
-                  <span> CPF: {props.userData?.cpf || ""}</span>
-                  <span> Endereço: {props.userData?.address || ""}</span>
-                  <span> Email: {props.userData?.email || ""}</span>
-                  <span>
-                    Celular:{" "}
-                    {formatPhoneNumber(props.userData?.phone_number) || ""}
                   </span>
                   <span>
                     Data de emissão: {props.ticketsData?.emission_date}
