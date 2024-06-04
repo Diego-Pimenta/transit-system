@@ -182,9 +182,14 @@ const Register = () => {
             </FloatingLabel>
           </div>
           <div className={styles.ButtonSection}>
+            <Link style={{ width: "25%" }} to={"/"}>
+              <Button variant="primary" style={{ width: "100%" }}>
+                Voltar
+              </Button>
+            </Link>
             <Button
               variant="primary"
-              style={{ width: "50%" }}
+              style={{ width: "25%" }}
               onClick={handleSubmit(Register)}
             >
               Cadastrar
