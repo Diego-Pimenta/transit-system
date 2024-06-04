@@ -1,0 +1,51 @@
+services:
+  mysqldb:
+    image: mysql:8.0.36-debian
+    container_name: mysqldb
+    ports:
+      - 3306:3306
+    volumes:
+      - data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: automotive_storage
+      MYSQL_PASSWORD: root
+    networks:
+      - transit_system
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: diegopimenta/transit-system-backend:latest
+    container_name: backend
+    ports:
+      - 8081:8081
+    environment:
+      HOST: mysqldb
+    networks:
+      - transit_system
+    depends_on:
+      - mysqldb
+    restart: on-failure
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      # dockerfile: Dockerfile.dev
+    image: diegopimenta/transit-system-frontend:latest
+    container_name: frontend
+    ports:
+      - 3000:80
+      # - 5173:5173
+    networks:
+      - transit_system
+    depends_on:
+      - backend
+
+volumes:
+  data:
+
+networks:
+  transit_system:

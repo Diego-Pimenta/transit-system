@@ -1,0 +1,40 @@
+.ticketsTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 95%;
+  height: 100%;
+  color: #246fa8;
+  font-weight: bolder;
+
+  @media(max-width:570px) {
+    font-size: 13px;
+    font-weight: bolder;
+  }
+}
+
+.ticketsBody {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  width: 100%;
+
+  @media(max-width:700px) {
+    font-size: 13px;
+    font-weight: 600;
+  }
+}
+
+.ticketsData {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.ticketsBtn {
+  width: 30%;
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  gap: 20px
+}
