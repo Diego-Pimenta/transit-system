@@ -27,6 +27,10 @@ const Login = (props) => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(formValidation),
+    defaultValues: {
+      cpf: "",
+      password: "",
+    },
   });
 
   const navigate = useNavigate();

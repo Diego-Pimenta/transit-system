@@ -21,16 +21,18 @@ const RouteApp = ({ setUserData, userData }) => {
 
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          isAuthenticated ? (
-            <Home userData={userData} />
-          ) : (
-            <Login setUserData={setUserData} />
-          )
-        }
-      />
+      {/*       
+    //   <Route
+    //     path="/"
+    //     element={
+    //       isAuthenticated ? (
+    //         <Home userData={userData} />
+    //       ) : (
+    //         <Login setUserData={setUserData} />
+    //       )
+    //     }
+    //   /> */}
+      <Route path="/" element={<Login setUserData={setUserData} />} />
       <Route path="/register" element={<Register />} />
 
       <Route

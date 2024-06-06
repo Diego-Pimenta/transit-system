@@ -51,7 +51,7 @@ const ModalTicketCreate = (props) => {
             },
           });
 
-          if (resp.status === 200) {
+          if (resp?.status === 200) {
             setTicketsData(resp.data);
           } else {
             toast.error("Resposta inesperada do servidor, contate o suporte!");
@@ -69,7 +69,7 @@ const ModalTicketCreate = (props) => {
             },
           });
 
-          if (resp.status === 200) {
+          if (resp?.status === 200) {
             setVehiclesData(resp.data);
           } else {
             toast.error("Resposta inesperada do servidor, contate o suporte!");
@@ -198,7 +198,7 @@ const ModalTicketCreate = (props) => {
 
           <FloatingLabel
             controlId="floatingInput"
-            label="Data de emissão"
+            label="Data da emissão"
             className="mb-3"
             style={{ marginTop: "20px" }}
             error={errors.emission_date}
@@ -206,7 +206,7 @@ const ModalTicketCreate = (props) => {
             <input
               type="date"
               class="form-control"
-              placeholder="Data de emissão"
+              placeholder="Data da emissão"
               value={watch("emission_date")}
               {...register("emission_date")}
             />
@@ -223,7 +223,7 @@ const ModalTicketCreate = (props) => {
           >
             <Form.Control
               type="time"
-              placeholder="CPF"
+              placeholder="Hora da emissão"
               value={watch("time")}
               {...register("time")}
             />
