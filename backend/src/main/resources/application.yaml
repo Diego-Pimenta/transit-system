@@ -10,7 +10,7 @@ spring:
   # Database Configuration
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${HOST:localhost}:3306/automotive_storage?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true
+    url: jdbc:mysql://${HOST:localhost}:${PORT:3306}/automotive_storage?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true
     username: root
     password: root
 
