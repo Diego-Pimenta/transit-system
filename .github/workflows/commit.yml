@@ -1,9 +1,9 @@
-name: CI
+name: Commit Validation
 
 on: [push, pull_request]
 
 jobs:
-  commitlint:
+  build:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
